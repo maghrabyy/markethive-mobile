@@ -4,6 +4,8 @@ import { WelcomeScreen } from '../screens/unauthenticatedScreens/WelcomePage';
 import { LoginScreen } from '../screens/unauthenticatedScreens/LoginScreen';
 import { RegisterScreen } from '../screens/unauthenticatedScreens/RegisterScreen';
 import { BottomTabsNavigation } from './BottomTabsNavigation';
+import { ShoppingCartScreen } from '../screens/authenticatedScreens/ShoppingCartScreen';
+import { ProfileScreen } from '../screens/authenticatedScreens/ProfileScreen';
 import { routes } from '../routes/routes';
 import { ScreenLoader } from '../components/ScreenLoader';
 import { useIsFirstUsage } from '../context/Context Data/IsFirstUsageContext';
@@ -26,9 +28,23 @@ export const StackNavigation = () => {
       <Stack.Screen
         name={routes.homeScreen}
         component={BottomTabsNavigation}
-        options={{
-          header: () => <CustomAppBar />,
-        }}
+        options={({ navigation, route }) => ({
+          header: () => <CustomAppBar route={route} navigation={navigation} />,
+        })}
+      />
+      <Stack.Screen
+        name={routes.shoppingCart}
+        component={ShoppingCartScreen}
+        options={({ navigation, route }) => ({
+          header: () => <CustomAppBar route={route} navigation={navigation} />,
+        })}
+      />
+      <Stack.Screen
+        name={routes.profile}
+        component={ProfileScreen}
+        options={({ navigation, route }) => ({
+          header: () => <CustomAppBar route={route} navigation={navigation} />,
+        })}
       />
     </Stack.Navigator>
   );

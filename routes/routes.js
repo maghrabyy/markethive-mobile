@@ -3,4 +3,6 @@ export const routes = {
   loginScreen: 'Login',
   registerScreen: 'Register',
   homeScreen: 'HomeLayout',
+  shoppingCart: 'shoppingCart',
+  profile: 'profile',
 };

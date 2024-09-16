@@ -1,49 +1,66 @@
 import { View, Text, StyleSheet, StatusBar } from 'react-native';
-import { Avatar, IconButton, Badge } from 'react-native-paper';
+import { Avatar, Badge, Appbar } from 'react-native-paper';
 import Fa5Icon from 'react-native-vector-icons/FontAwesome';
 import { colors } from '../style/colors';
+import { routes } from '../routes/routes';
+import { memo } from 'react';
 
-export const CustomAppBar = () => {
+export const CustomAppBar = ({ route, navigation }) => {
   return (
-    <View style={styles.appBarBody}>
-      <View style={{ flexDirection: 'row', gap: 8, alignItems: 'center' }}>
-        <Avatar.Image source={require('../assets/MHLogoIcon.png')} size={38} />
-        <Text style={styles.headerText}>Market Hive</Text>
-      </View>
-      <View style={{ flexDirection: 'row' }}>
-        <IconButton
-          icon={() => <Fa5Icon name="user-circle" size={24} color="white" />}
-          onPress={() => {}}
+    <Appbar.Header style={styles.appBarBody}>
+      {navigation.canGoBack() && (
+        <Appbar.BackAction
+          color="white"
+          onPress={() => {
+            navigation.goBack();
+          }}
         />
+      )}
+      <Appbar.Content
+        title={
+          <View style={{ flexDirection: 'row', gap: 8, alignItems: 'center' }}>
+            <Avatar.Image
+              source={require('../assets/MHLogoIcon.png')}
+              size={38}
+            />
+            <Text style={styles.headerText}>Market Hive</Text>
+          </View>
+        }
+      />
+      {route.name !== routes.profile && (
+        <Appbar.Action
+          icon={() => <Fa5Icon name="user-circle" size={24} color="white" />}
+          onPress={() => {
+            navigation.navigate(routes.profile);
+          }}
+        />
+      )}
+      {route.name !== routes.shoppingCart && (
         <View style={{ position: 'relative' }}>
-          <IconButton
+          <Appbar.Action
             icon={() => (
               <Fa5Icon name="shopping-cart" size={24} color="white" />
             )}
-            onPress={() => {}}
+            onPress={() => {
+              navigation.navigate(routes.shoppingCart);
+            }}
           />
           <Badge size={22} style={{ position: 'absolute', top: 2 }}>
             0
           </Badge>
         </View>
-      </View>
-    </View>
+      )}
+    </Appbar.Header>
   );
 };
 
 const styles = StyleSheet.create({
   appBarBody: {
-    marginTop: StatusBar.currentHeight,
     backgroundColor: colors.primary,
     elevation: 10,
-    borderBottomStartRadius: 18,
-    borderBottomEndRadius: 18,
+    borderRadius: 18,
     paddingHorizontal: 14,
     height: 70,
-    overflow: 'hidden',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
   },
   headerText: {
     fontSize: 22,

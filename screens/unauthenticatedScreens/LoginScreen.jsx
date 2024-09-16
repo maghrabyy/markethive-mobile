@@ -12,6 +12,7 @@ export const LoginScreen = () => {
         mode="contained"
         onPress={() => {
           navigation.replace(routes.homeScreen);
+          navigation.reset({ index: 0, routes: [{ name: routes.homeScreen }] });
         }}
       >
         Login
