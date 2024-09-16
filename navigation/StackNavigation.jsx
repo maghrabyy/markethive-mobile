@@ -7,6 +7,7 @@ import { BottomTabsNavigation } from './BottomTabsNavigation';
 import { routes } from '../routes/routes';
 import { ScreenLoader } from '../components/ScreenLoader';
 import { useIsFirstUsage } from '../context/Context Data/IsFirstUsageContext';
+import { CustomAppBar } from '../components/CustomerAppbar';
 
 const Stack = createStackNavigator();
 
@@ -22,7 +23,13 @@ export const StackNavigation = () => {
       />
       <Stack.Screen name={routes.loginScreen} component={LoginScreen} />
       <Stack.Screen name={routes.registerScreen} component={RegisterScreen} />
-      <Stack.Screen name={routes.homeScreen} component={BottomTabsNavigation} />
+      <Stack.Screen
+        name={routes.homeScreen}
+        component={BottomTabsNavigation}
+        options={{
+          header: () => <CustomAppBar />,
+        }}
+      />
     </Stack.Navigator>
   );
 };
