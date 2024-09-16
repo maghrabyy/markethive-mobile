@@ -11,6 +11,7 @@ import {
   REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
   REACT_APP_FIREBASE_APP_ID,
   REACT_APP_FIREBASE_MEASUREMENT_ID,
+  REACT_APP_FIREBASE_STORAGE_BUCKET_URL,
 } from '@env';
 
 const firebaseConfig = {
@@ -25,7 +26,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-const storage = getStorage(app, 'gs://markethive-258a5.appspot.com');
+const storage = getStorage(app, REACT_APP_FIREBASE_STORAGE_BUCKET_URL);
 
 const auth = initializeAuth(app, {
   persistence: getReactNativePersistence(ReactNativeAsyncStorage),
