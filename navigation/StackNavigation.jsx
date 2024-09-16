@@ -35,15 +35,23 @@ export const StackNavigation = () => {
       <Stack.Screen
         name={routes.shoppingCart}
         component={ShoppingCartScreen}
-        options={({ navigation, route }) => ({
-          header: () => <CustomAppBar route={route} navigation={navigation} />,
+        options={({ navigation }) => ({
+          header: () => (
+            <CustomAppBar
+              title="Shopping Cart"
+              navigation={navigation}
+              hideActions
+            />
+          ),
         })}
       />
       <Stack.Screen
         name={routes.profile}
         component={ProfileScreen}
-        options={({ navigation, route }) => ({
-          header: () => <CustomAppBar route={route} navigation={navigation} />,
+        options={({ navigation }) => ({
+          header: () => (
+            <CustomAppBar title="Profile" navigation={navigation} hideActions />
+          ),
         })}
       />
     </Stack.Navigator>

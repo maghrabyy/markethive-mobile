@@ -5,7 +5,7 @@ import { colors } from '../style/colors';
 import { routes } from '../routes/routes';
 import { memo } from 'react';
 
-export const CustomAppBar = ({ route, navigation }) => {
+export const CustomAppBar = ({ title, navigation, hideActions }) => {
   return (
     <Appbar.Header style={styles.appBarBody}>
       {navigation.canGoBack() && (
@@ -23,32 +23,35 @@ export const CustomAppBar = ({ route, navigation }) => {
               source={require('../assets/MHLogoIcon.png')}
               size={38}
             />
-            <Text style={styles.headerText}>Market Hive</Text>
+            <Text style={styles.headerText}>
+              {title ? title : 'Market Hive'}
+            </Text>
           </View>
         }
       />
-      {route.name !== routes.profile && (
-        <Appbar.Action
-          icon={() => <Fa5Icon name="user-circle" size={24} color="white" />}
-          onPress={() => {
-            navigation.navigate(routes.profile);
-          }}
-        />
-      )}
-      {route.name !== routes.shoppingCart && (
-        <View style={{ position: 'relative' }}>
+      {!hideActions && (
+        <>
           <Appbar.Action
-            icon={() => (
-              <Fa5Icon name="shopping-cart" size={24} color="white" />
-            )}
+            icon={() => <Fa5Icon name="user-circle" size={24} color="white" />}
             onPress={() => {
-              navigation.navigate(routes.shoppingCart);
+              navigation.navigate(routes.profile);
             }}
           />
-          <Badge size={22} style={{ position: 'absolute', top: 2 }}>
-            0
-          </Badge>
-        </View>
+
+          <View style={{ position: 'relative' }}>
+            <Appbar.Action
+              icon={() => (
+                <Fa5Icon name="shopping-cart" size={24} color="white" />
+              )}
+              onPress={() => {
+                navigation.navigate(routes.shoppingCart);
+              }}
+            />
+            <Badge size={22} style={{ position: 'absolute', top: 2 }}>
+              0
+            </Badge>
+          </View>
+        </>
       )}
     </Appbar.Header>
   );
