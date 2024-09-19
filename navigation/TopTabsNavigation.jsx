@@ -1,31 +1,35 @@
-import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { HomeScreen } from '../screens/authenticatedScreens/HomeScreen';
 import { StoresScreen } from '../screens/authenticatedScreens/StoresScreen';
 import { CategoriesScreen } from '../screens/authenticatedScreens/CategoriesScreen';
 import FaIcon from 'react-native-vector-icons/FontAwesome';
 import Fa5Icon from 'react-native-vector-icons/FontAwesome5';
 import IonIcon from 'react-native-vector-icons/Ionicons';
-import { colors } from '../style/colors';
+import { colors } from '../constants/colors';
 import { StyleSheet } from 'react-native';
+import { resH } from '../constants/dimensions';
 
-const Tab = createMaterialBottomTabNavigator();
+const Tab = createMaterialTopTabNavigator();
 
-export const BottomTabsNavigation = () => {
+export const TopTabsNavigation = () => {
   return (
     <Tab.Navigator
       initialRouteName="Home"
+      tabBarPosition="bottom"
       backBehavior="initialRoute"
-      inactiveColor={colors.light}
-      activeColor="white"
-      activeIndicatorStyle={{ display: 'none' }}
-      barStyle={styles.barTab}
+      screenOptions={{
+        tabBarIndicatorStyle: { backgroundColor: colors.primary },
+        tabBarActiveTintColor: colors.primary,
+        tabBarInactiveTintColor: colors.dark,
+        tabBarStyle: styles.barTab,
+      }}
     >
       <Tab.Screen
         name="Stores"
         component={StoresScreen}
         options={{
           tabBarIcon: ({ color }) => (
-            <Fa5Icon name="store" color={color} size={24} />
+            <Fa5Icon name="store" color={color} size={20} />
           ),
         }}
       />
@@ -53,11 +57,6 @@ export const BottomTabsNavigation = () => {
 
 const styles = StyleSheet.create({
   barTab: {
-    backgroundColor: colors.primary,
-    position: 'absolute',
-    overflow: 'hidden',
-    borderRadius: 30,
-    bottom: 8,
-    marginHorizontal: 8,
+    marginTop: resH(0.5),
   },
 });

@@ -3,7 +3,7 @@ import { OnboardingScreen } from '../screens/unauthenticatedScreens/OnboardingSc
 import { WelcomeScreen } from '../screens/unauthenticatedScreens/WelcomePage';
 import { LoginScreen } from '../screens/unauthenticatedScreens/LoginScreen';
 import { RegisterScreen } from '../screens/unauthenticatedScreens/RegisterScreen';
-import { BottomTabsNavigation } from './BottomTabsNavigation';
+import { TopTabsNavigation } from './TopTabsNavigation';
 import { ShoppingCartScreen } from '../screens/authenticatedScreens/ShoppingCartScreen';
 import { ProfileScreen } from '../screens/authenticatedScreens/ProfileScreen';
 import { routes } from '../routes/routes';
@@ -27,7 +27,7 @@ export const StackNavigation = () => {
       <Stack.Screen name={routes.registerScreen} component={RegisterScreen} />
       <Stack.Screen
         name={routes.homeScreen}
-        component={BottomTabsNavigation}
+        component={TopTabsNavigation}
         options={({ navigation, route }) => ({
           header: () => <CustomAppBar route={route} navigation={navigation} />,
         })}

@@ -1,9 +1,10 @@
 import { View, Text, StyleSheet, StatusBar } from 'react-native';
 import { Avatar, Badge, Appbar } from 'react-native-paper';
 import Fa5Icon from 'react-native-vector-icons/FontAwesome';
-import { colors } from '../style/colors';
+import { colors } from '../constants/colors';
 import { routes } from '../routes/routes';
 import { memo } from 'react';
+import { resH } from '../constants/dimensions';
 
 export const CustomAppBar = ({ title, navigation, hideActions }) => {
   return (
@@ -61,9 +62,10 @@ const styles = StyleSheet.create({
   appBarBody: {
     backgroundColor: colors.primary,
     elevation: 10,
-    borderRadius: 18,
+    borderBottomRightRadius: 18,
+    borderBottomLeftRadius: 18,
     paddingHorizontal: 14,
-    height: 70,
+    height: resH(8),
   },
   headerText: {
     fontSize: 22,
