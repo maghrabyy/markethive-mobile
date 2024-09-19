@@ -26,13 +26,17 @@ export const ProductSkeletonCard = () => {
   );
 };
 
-export const CollectionSkeletonCard = ({ style }) => {
+export const CollectionSkeletonCard = ({
+  style,
+  width = resW(45),
+  height = 200,
+}) => {
   return (
     <View
       style={[
         {
-          height: 200,
-          width: resW(45),
+          height: height,
+          width: width,
           borderRadius: 8,
           overflow: 'hidden',
           backgroundColor: 'white',

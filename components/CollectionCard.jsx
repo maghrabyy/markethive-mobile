@@ -2,12 +2,17 @@ import { View, Text, Image } from 'react-native';
 import { resW } from '../constants/dimensions';
 import { colors } from '../constants/colors';
 
-export const CollectionCard = ({ title, imageUrl }) => {
+export const CollectionCard = ({
+  title,
+  imageUrl,
+  width = resW(45),
+  height = 200,
+}) => {
   return (
     <View
       style={{
-        height: 200,
-        width: resW(45),
+        height: height,
+        width: width,
         borderRadius: 8,
         overflow: 'hidden',
         backgroundColor: 'white',
