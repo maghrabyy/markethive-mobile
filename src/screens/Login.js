@@ -21,10 +21,7 @@ const loginValidationSchema = yup.object().shape({
     .string()
     .email('Please enter valid email')
     .required('Email Address is Required'),
-  password: yup
-    .string()
-    .min(8, ({ min }) => `Password must be at least ${min} characters`)
-    .required('Password is required'),
+  password: yup.string().required('Password is required'),
 });
 
 const Login = ({ navigation }) => {
@@ -34,9 +31,6 @@ const Login = ({ navigation }) => {
     <SafeAreaView>
       <View style={{ marginLeft: 18, marginTop: 130 }}>
         <Text style={styles.txt}>Login</Text>
-        {authError && (
-          <Text style={{ textAlign: 'center', color: 'red' }}>{authError}</Text>
-        )}
       </View>
       <Formik
         validationSchema={loginValidationSchema}
@@ -134,6 +128,11 @@ const Login = ({ navigation }) => {
           </>
         )}
       </Formik>
+      {authError && (
+        <Text style={{ textAlign: 'center', color: 'red', marginTop: 8 }}>
+          {authError}
+        </Text>
+      )}
       <View
         style={{
           marginTop: 100,

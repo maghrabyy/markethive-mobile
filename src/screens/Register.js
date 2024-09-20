@@ -57,9 +57,6 @@ const Register = ({ navigation }) => {
     <SafeAreaView>
       <View style={{ marginLeft: 18, marginTop: 10 }}>
         <Text style={styles.txt}>Registeration</Text>
-        {authError && (
-          <Text style={{ textAlign: 'center', color: 'red' }}>{authError}</Text>
-        )}
       </View>
       <ScrollView>
         <Formik
@@ -284,27 +281,33 @@ const Register = ({ navigation }) => {
             </>
           )}
         </Formik>
-      </ScrollView>
-      <View
-        style={{
-          marginTop: 30,
-          flexDirection: 'row',
-          justifyContent: 'center',
-        }}
-      >
-        <Text style={{ fontSize: 15 }}>Already have a accout?</Text>
-        <TouchableOpacity onPress={() => navigation.navigate(routes.login)}>
-          <Text
-            style={{
-              textDecorationLine: 'underline',
-              fontSize: 15,
-              fontWeight: '600',
-            }}
-          >
-            Login
+        {authError && (
+          <Text style={{ textAlign: 'center', color: 'red', marginTop: 8 }}>
+            {authError}
           </Text>
-        </TouchableOpacity>
-      </View>
+        )}
+        <View
+          style={{
+            marginTop: 20,
+            marginBottom: 30,
+            flexDirection: 'row',
+            justifyContent: 'center',
+          }}
+        >
+          <Text style={{ fontSize: 15 }}>Already have a accout?</Text>
+          <TouchableOpacity onPress={() => navigation.navigate(routes.login)}>
+            <Text
+              style={{
+                textDecorationLine: 'underline',
+                fontSize: 15,
+                fontWeight: '600',
+              }}
+            >
+              Login
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
