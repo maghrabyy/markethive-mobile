@@ -1,12 +1,23 @@
-import { StatusBar } from 'expo-status-bar';
+
 import { StyleSheet, Text, View } from 'react-native';
 
+import Stores from './Slice/Stores';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Categories from './Slice/Categories';
+import { NavigationContainer } from '@react-navigation/native';
+import { CatContextProvider } from './Context/CatContextProvider';
+
+const Tab = createBottomTabNavigator();
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <CatContextProvider >
+    <NavigationContainer>
+    <Tab.Navigator>
+    <Tab.Screen name="categories" component={Categories} />
+    <Tab.Screen name="stores" component={Stores} />
+  </Tab.Navigator>
+  </NavigationContainer>
+  </CatContextProvider>
   );
 }
 
