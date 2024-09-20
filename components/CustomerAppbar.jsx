@@ -2,8 +2,7 @@ import { View, Text, StyleSheet, StatusBar } from 'react-native';
 import { Avatar, Badge, Appbar } from 'react-native-paper';
 import Fa5Icon from 'react-native-vector-icons/FontAwesome';
 import { colors } from '../constants/colors';
-import { routes } from '../routes/routes';
-import { memo } from 'react';
+import { routes } from '../utils/routes';
 import { resH } from '../constants/dimensions';
 
 export const CustomAppBar = ({ title, navigation, hideActions }) => {
