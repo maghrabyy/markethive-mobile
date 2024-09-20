@@ -63,8 +63,7 @@ const styles = StyleSheet.create({
     elevation: 10,
     borderBottomRightRadius: 18,
     borderBottomLeftRadius: 18,
-    paddingHorizontal: 14,
-    height: resH(8),
+    paddingHorizontal: 10,
   },
   headerText: {
     fontSize: 22,
