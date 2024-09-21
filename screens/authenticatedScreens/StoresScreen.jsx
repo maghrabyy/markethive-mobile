@@ -85,41 +85,49 @@ export const StoresScreen = () => {
         value={text}
       />
 
-      <Picker
-        selectedValue={selectedSort}
-        style={styles.picker}
-        onValueChange={(itemValue) => {
-          setSelectedSort(itemValue);
-          handleSortBy(itemValue);
+      <View
+        style={{
+          flexDirection: 'row',
+          width: '100%',
+          paddingHorizontal: 10,
+          justifyContent: 'space-between',
         }}
       >
-        <Picker.Item label="Sort By" enabled={false} value="Sort By" />
-        <Picker.Item label="New to Old" value="NewToOld" />
-        <Picker.Item label="Old to New" value="OldToNew" />
-        <Picker.Item label="Most Products" value="mostProducts" />
-        <Picker.Item label="Least Products" value="leastProducts" />
-      </Picker>
-
-      <Picker
-        selectedValue={selectedCategory}
-        style={styles.picker}
-        onValueChange={(itemValue) => {
-          setSelectedCategory(itemValue);
-          handleFilterCategory(itemValue);
-        }}
-      >
-        <Picker.Item
-          label={isCategoriesLoading ? 'Loading..' : 'All'}
-          value={isCategoriesLoading ? '' : 'All'}
-        />
-        {categories.map((item) => (
+        <Picker
+          selectedValue={selectedSort}
+          style={styles.picker}
+          onValueChange={(itemValue) => {
+            setSelectedSort(itemValue);
+            handleSortBy(itemValue);
+          }}
+        >
+          <Picker.Item label="Sort By" enabled={false} value="Sort By" />
+          <Picker.Item label="New to Old" value="NewToOld" />
+          <Picker.Item label="Old to New" value="OldToNew" />
+          <Picker.Item label="Most Products" value="mostProducts" />
+          <Picker.Item label="Least Products" value="leastProducts" />
+        </Picker>
+        <Picker
+          selectedValue={selectedCategory}
+          style={styles.picker}
+          onValueChange={(itemValue) => {
+            setSelectedCategory(itemValue);
+            handleFilterCategory(itemValue);
+          }}
+        >
           <Picker.Item
-            key={item.categoryName}
-            label={item.categoryName}
-            value={item.id}
+            label={isCategoriesLoading ? 'Loading..' : 'All'}
+            value={isCategoriesLoading ? '' : 'All'}
           />
-        ))}
-      </Picker>
+          {categories.map((item) => (
+            <Picker.Item
+              key={item.categoryName}
+              label={item.categoryName}
+              value={item.id}
+            />
+          ))}
+        </Picker>
+      </View>
       {isStoresLoading ? (
         <CollectionSkeletonCard width={resW(95)} />
       ) : (
@@ -149,7 +157,7 @@ const styles = StyleSheet.create({
     flex: 1,
     gap: 10,
     alignItems: 'center',
-    paddingVertical: 8,
+    paddingTop: 8,
   },
   searchInput: {
     backgroundColor: '#C7C8CC',
@@ -159,7 +167,8 @@ const styles = StyleSheet.create({
   },
   picker: {
     height: 50,
-    width: '90%',
-    marginBottom: 20,
+    backgroundColor: '#fffff4',
+    width: '49%',
+    borderRadius: 50,
   },
 });

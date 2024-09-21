@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     flex: 1,
     gap: 10,
     alignItems: 'center',
-    paddingVertical: 8,
+    paddingTop: 8,
   },
   searchInput: {
     backgroundColor: '#C7C8CC',
