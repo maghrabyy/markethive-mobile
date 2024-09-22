@@ -84,50 +84,6 @@ export const StoresScreen = () => {
         onChangeText={(text) => setText(text)}
         value={text}
       />
-
-      <View
-        style={{
-          flexDirection: 'row',
-          width: '100%',
-          paddingHorizontal: 10,
-          justifyContent: 'space-between',
-        }}
-      >
-        <Picker
-          selectedValue={selectedSort}
-          style={styles.picker}
-          onValueChange={(itemValue) => {
-            setSelectedSort(itemValue);
-            handleSortBy(itemValue);
-          }}
-        >
-          <Picker.Item label="Sort By" enabled={false} value="Sort By" />
-          <Picker.Item label="New to Old" value="NewToOld" />
-          <Picker.Item label="Old to New" value="OldToNew" />
-          <Picker.Item label="Most Products" value="mostProducts" />
-          <Picker.Item label="Least Products" value="leastProducts" />
-        </Picker>
-        <Picker
-          selectedValue={selectedCategory}
-          style={styles.picker}
-          onValueChange={(itemValue) => {
-            setSelectedCategory(itemValue);
-            handleFilterCategory(itemValue);
-          }}
-        >
-          <Picker.Item
-            label={isCategoriesLoading ? 'Loading..' : 'All'}
-            value={isCategoriesLoading ? '' : 'All'}
-          />
-          {categories.map((item) => (
-            <Picker.Item
-              key={item.categoryName}
-              label={item.categoryName}
-              value={item.id}
-            />
-          ))}
-        </Picker>
-      </View>
       {isStoresLoading ? (
         Array.from(Array(4)).map((_, index) => (
           <CollectionSkeletonCard key={index} width={resW(95)} />
@@ -140,6 +96,52 @@ export const StoresScreen = () => {
             <EmptyList text="Nothing is found here." type="stores" />
           )}
           showsVerticalScrollIndicator={false}
+          ListHeaderComponent={() => (
+            <View
+              style={{
+                flexDirection: 'row',
+                width: '100%',
+                paddingHorizontal: 10,
+                paddingBottom: 8,
+                justifyContent: 'space-between',
+              }}
+            >
+              <Picker
+                selectedValue={selectedSort}
+                style={styles.picker}
+                onValueChange={(itemValue) => {
+                  setSelectedSort(itemValue);
+                  handleSortBy(itemValue);
+                }}
+              >
+                <Picker.Item label="Sort By" enabled={false} value="Sort By" />
+                <Picker.Item label="New to Old" value="NewToOld" />
+                <Picker.Item label="Old to New" value="OldToNew" />
+                <Picker.Item label="Most Products" value="mostProducts" />
+                <Picker.Item label="Least Products" value="leastProducts" />
+              </Picker>
+              <Picker
+                selectedValue={selectedCategory}
+                style={styles.picker}
+                onValueChange={(itemValue) => {
+                  setSelectedCategory(itemValue);
+                  handleFilterCategory(itemValue);
+                }}
+              >
+                <Picker.Item
+                  label={isCategoriesLoading ? 'Loading..' : 'All'}
+                  value={isCategoriesLoading ? '' : 'All'}
+                />
+                {categories.map((item) => (
+                  <Picker.Item
+                    key={item.categoryName}
+                    label={item.categoryName}
+                    value={item.id}
+                  />
+                ))}
+              </Picker>
+            </View>
+          )}
           ItemSeparatorComponent={() => <View height={8} />}
           renderItem={({ item }) => (
             <CollectionCard
@@ -176,6 +178,5 @@ const styles = StyleSheet.create({
     height: 50,
     backgroundColor: '#fffff4',
     width: '49%',
-    borderRadius: 50,
   },
 });
