@@ -3,9 +3,11 @@ import { Avatar, Badge, Appbar } from 'react-native-paper';
 import Fa5Icon from 'react-native-vector-icons/FontAwesome';
 import { colors } from '../constants/colors';
 import { routes } from '../utils/routes';
-import { resH } from '../constants/dimensions';
+import { useFetchCartItems } from '../Custom Hooks/useFetchCartItems';
 
 export const CustomAppBar = ({ title, navigation, hideActions }) => {
+  const { cartItems, isCartLoading } = useFetchCartItems();
+  const shoppingCartItemNum = cartItems.length;
   return (
     <Appbar.Header style={styles.appBarBody}>
       {navigation.canGoBack() && (
@@ -47,9 +49,11 @@ export const CustomAppBar = ({ title, navigation, hideActions }) => {
                 navigation.navigate(routes.shoppingCart);
               }}
             />
-            <Badge size={22} style={{ position: 'absolute', top: 2 }}>
-              0
-            </Badge>
+            {!isCartLoading && (
+              <Badge size={22} style={{ position: 'absolute', top: 2 }}>
+                {shoppingCartItemNum}
+              </Badge>
+            )}
           </View>
         </>
       )}

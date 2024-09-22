@@ -1,14 +1,20 @@
 import { View, Text, Image } from 'react-native';
 import { IconButton, Avatar, MD3Colors } from 'react-native-paper';
-import Fa5Icon from 'react-native-vector-icons/FontAwesome';
+import FaIcon from 'react-native-vector-icons/FontAwesome';
 import { colors } from '../constants/colors';
 import { useFetchStore } from '../Custom Hooks/useFetchStore';
 import { resW } from '../constants/dimensions';
+import { useFetchWishList } from '../Custom Hooks/useFetchWishList';
+import { useAddToCart } from '../Custom Hooks/useAddToCart';
 
-export const ProductCard = ({ product }) => {
+export const ProductCard = ({ product, showStore = true }) => {
   const productPrice = product.discount
     ? product.price - product.price * product.discount
     : product.price;
+  const { handleAddToCart } = useAddToCart(product, 1, productPrice);
+  const { wishlistHandler, isLoading, isAddedToWishlist } = useFetchWishList(
+    product.id,
+  );
   const { store, isStoreLoading } = useFetchStore(product.storeId);
   return (
     <View
@@ -23,18 +29,23 @@ export const ProductCard = ({ product }) => {
     >
       <IconButton
         style={{ position: 'absolute', top: 0, right: 0, zIndex: 10 }}
-        icon={() => <Fa5Icon name="shopping-cart" color="white" />}
+        icon={() => <FaIcon name="shopping-cart" color="white" />}
         containerColor={colors.primary}
         mode="contained"
         size={12}
-        onPress={() => {}}
+        onPress={handleAddToCart}
       />
       <IconButton
         style={{ position: 'absolute', top: 0, right: 35, zIndex: 10 }}
-        icon={() => <Fa5Icon name="heart" color="white" />}
-        containerColor={colors.primary}
+        icon={() => (
+          <FaIcon
+            name={isAddedToWishlist() ? 'heart' : 'heart-o'}
+            color="white"
+          />
+        )}
+        containerColor={isAddedToWishlist() ? 'red' : colors.primary}
         size={12}
-        onPress={() => {}}
+        onPress={wishlistHandler}
       />
       <View style={{ position: 'relative' }}>
         {Number(product.discount) > 0 && (
@@ -58,23 +69,25 @@ export const ProductCard = ({ product }) => {
           height={200}
           resizeMode="contain"
         />
-        <View
-          style={{
-            position: 'absolute',
-            bottom: 0,
-            width: '100%',
-            padding: 8,
-            backgroundColor: colors.primaryTransparent,
-            flexDirection: 'row',
-            gap: 8,
-            alignItems: 'center',
-          }}
-        >
-          <Avatar.Image source={{ uri: store.logo }} size={24} />
-          <Text style={{ color: 'white', fontWeight: 'bold' }}>
-            {isStoreLoading ? 'Loading..' : store.name}
-          </Text>
-        </View>
+        {showStore && (
+          <View
+            style={{
+              position: 'absolute',
+              bottom: 0,
+              width: '100%',
+              padding: 8,
+              backgroundColor: colors.primaryTransparent,
+              flexDirection: 'row',
+              gap: 8,
+              alignItems: 'center',
+            }}
+          >
+            <Avatar.Image source={{ uri: store.logo }} size={24} />
+            <Text style={{ color: 'white', fontWeight: 'bold' }}>
+              {isStoreLoading ? 'Loading..' : store.name}
+            </Text>
+          </View>
+        )}
       </View>
       <View style={{ padding: 14 }}>
         <Text style={{ fontSize: 14, fontWeight: '600' }} numberOfLines={1}>
