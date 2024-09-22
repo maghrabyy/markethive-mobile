@@ -6,6 +6,7 @@ import RegisterScreen from '../screens/unauthenticatedScreens/RegisterScreen';
 import { TopTabsNavigation } from './TopTabsNavigation';
 import { ShoppingCartScreen } from '../screens/authenticatedScreens/ShoppingCartScreen';
 import { ProfileScreen } from '../screens/authenticatedScreens/ProfileScreen';
+import { ProductsScreen } from '../screens/authenticatedScreens/ProductsScreen';
 import { routes } from '../utils/routes';
 import { ScreenLoader } from '../components/ScreenLoader';
 import { useIsFirstUsage } from '../context/Context Data/IsFirstUsageContext';
@@ -13,6 +14,8 @@ import { CustomAppBar } from '../components/CustomerAppbar';
 import { useState } from 'react';
 import { auth } from '../firebase';
 import { onAuthStateChanged } from 'firebase/auth';
+import { ProductListLayoutProvider } from '../context/Context Data/ProductlistLayoutContext';
+import { ProductsListProvider } from '../context/Context Data/ProductListContext';
 
 const Stack = createStackNavigator();
 
@@ -66,6 +69,25 @@ export const StackNavigation = () => {
           ),
         })}
       />
+      <Stack.Screen
+        name={routes.products}
+        options={({ navigation, route }) => ({
+          header: () => (
+            <CustomAppBar
+              title={route.params.collectionName}
+              navigation={navigation}
+            />
+          ),
+        })}
+      >
+        {({ route }) => (
+          <ProductsListProvider route={route}>
+            <ProductListLayoutProvider>
+              <ProductsScreen />
+            </ProductListLayoutProvider>
+          </ProductsListProvider>
+        )}
+      </Stack.Screen>
     </Stack.Navigator>
   );
 };

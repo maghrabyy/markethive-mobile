@@ -129,7 +129,9 @@ export const StoresScreen = () => {
         </Picker>
       </View>
       {isStoresLoading ? (
-        <CollectionSkeletonCard width={resW(95)} />
+        Array.from(Array(4)).map((_, index) => (
+          <CollectionSkeletonCard key={index} width={resW(95)} />
+        ))
       ) : (
         <FlatList
           contentContainerStyle={{ alignItems: 'center' }}
@@ -137,12 +139,17 @@ export const StoresScreen = () => {
           ListEmptyComponent={() => (
             <EmptyList text="Nothing is found here." type="stores" />
           )}
+          showsVerticalScrollIndicator={false}
           ItemSeparatorComponent={() => <View height={8} />}
           renderItem={({ item }) => (
             <CollectionCard
               title={item.name}
               imageUrl={item.logo}
               width={resW(95)}
+              params={{
+                collectionName: item.name,
+                store: item,
+              }}
             />
           )}
           keyExtractor={(item) => item.id}

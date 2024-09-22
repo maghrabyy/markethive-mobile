@@ -24,11 +24,14 @@ export const CategoriesScreen = () => {
       />
 
       {isCategoriesLoading ? (
-        <CollectionSkeletonCard width={resW(95)} />
+        Array.from(Array(4)).map((_, index) => (
+          <CollectionSkeletonCard key={index} width={resW(95)} />
+        ))
       ) : (
         <FlatList
           contentContainerStyle={{ alignItems: 'center' }}
           data={filteredCategories}
+          showsVerticalScrollIndicator={false}
           ItemSeparatorComponent={() => <View height={8} />}
           ListEmptyComponent={() => <EmptyList text="Nothing is found here." />}
           renderItem={({ item }) => (
@@ -36,6 +39,10 @@ export const CategoriesScreen = () => {
               title={item.categoryName}
               imageUrl={item.categoryImage}
               width={resW(95)}
+              params={{
+                collectionName: item.categoryName,
+                categoryId: item.id,
+              }}
             />
           )}
           keyExtractor={(item) => item.id}

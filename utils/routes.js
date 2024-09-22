@@ -5,4 +5,5 @@ export const routes = {
   homeScreen: 'HomeLayout',
   shoppingCart: 'shoppingCart',
   profile: 'profile',
+  products: 'products',
 };

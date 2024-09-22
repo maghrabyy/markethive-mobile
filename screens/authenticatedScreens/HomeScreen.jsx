@@ -1,4 +1,4 @@
-import { View, ScrollView, Text } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import useFetchData from '../../Custom Hooks/useFetchData';
 import { ProductCard } from '../../components/ProductCard';
 import { CollectionCard } from '../../components/CollectionCard';
@@ -57,6 +57,10 @@ export const HomeScreen = () => {
                 <CollectionCard
                   title={category.categoryName}
                   imageUrl={category.categoryImage}
+                  params={{
+                    collectionName: category.categoryName,
+                    categoryId: category.id,
+                  }}
                 />
               </View>
             ))}
@@ -88,7 +92,11 @@ export const HomeScreen = () => {
                   marginEnd: index !== popularStoresList.length - 1 && resW(2),
                 }}
               >
-                <CollectionCard title={store.name} imageUrl={store.logo} />
+                <CollectionCard
+                  title={store.name}
+                  imageUrl={store.logo}
+                  params={{ collectionName: store.name, store }}
+                />
               </View>
             ))}
           </ScrollView>
