@@ -9,10 +9,10 @@ import { StoreHeader } from '../../components/StoreHeader';
 import { useProductListLayout } from '../../context/Context Data/ProductlistLayoutContext';
 import { useRoute } from '@react-navigation/native';
 import { useProductsList } from '../../context/Context Data/ProductListContext';
-import { ProductListActions } from '../../components/ProductListActions';
 import { useCallback } from 'react';
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 import { FilterAndSort } from '../../components/ProductListActions';
+import { CategoryHeader } from '../../components/CategoryHeader';
 
 export const bottomSheetRef = { current: null };
 
@@ -22,7 +22,7 @@ export const ProductsScreen = () => {
   const { prodListLayout } = useProductListLayout();
   const { isProductsLoading } = useProductsList();
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       {isProductsLoading ? (
         <View style={{ paddingVertical: 8 }}>
           {Array.from(Array(4)).map((_, index) => (
@@ -46,11 +46,7 @@ export const ProductsScreen = () => {
 const TwoColumnsProductsList = ({ store }) => {
   const { products } = useProductsList();
   const ListHeaderComponent = useCallback(() => {
-    return store ? (
-      <StoreHeader store={store} />
-    ) : (
-      <ProductListActions paddingHorizontal={8} />
-    );
+    return store ? <StoreHeader store={store} /> : <CategoryHeader />;
   }, [store]);
   return (
     <View style={{ alignItems: 'center' }}>
@@ -62,7 +58,7 @@ const TwoColumnsProductsList = ({ store }) => {
         columnWrapperStyle={{ gap: 4 }}
         numColumns={2}
         keyExtractor={(item) => item.id}
-        ListHeaderComponent={ListHeaderComponent}
+        ListHeaderComponent={products.length > 0 && ListHeaderComponent}
         ListEmptyComponent={() => (
           <EmptyList text="No products in here." type="products" />
         )}
@@ -79,11 +75,7 @@ const TwoColumnsProductsList = ({ store }) => {
 const OneColumnProductsList = ({ store }) => {
   const { products } = useProductsList();
   const ListHeaderComponent = useCallback(() => {
-    return store ? (
-      <StoreHeader store={store} />
-    ) : (
-      <ProductListActions paddingHorizontal={8} />
-    );
+    return store ? <StoreHeader store={store} /> : <CategoryHeader />;
   }, [store]);
   return (
     <FlatList
@@ -92,7 +84,7 @@ const OneColumnProductsList = ({ store }) => {
         <ProductCard product={product} showStore={!store} />
       )}
       keyExtractor={(item) => item.id}
-      ListHeaderComponent={ListHeaderComponent}
+      ListHeaderComponent={products.length > 0 && ListHeaderComponent}
       ListEmptyComponent={() => (
         <EmptyList text="No products in here." type="products" />
       )}

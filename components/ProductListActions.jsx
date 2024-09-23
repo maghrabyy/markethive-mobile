@@ -23,7 +23,9 @@ export const ProductListActions = ({ paddingVertical, paddingHorizontal }) => {
       }}
     >
       <IconButton
-        icon={() => <FaIcon name="sliders" size={24} />}
+        style={{ margin: 0, borderRadius: 8 }}
+        containerColor={colors.primary}
+        icon={() => <FaIcon name="sliders" size={24} color="white" />}
         onPress={() => {
           bottomSheetRef.current.snapToIndex(1);
         }}
@@ -121,7 +123,6 @@ export const FilterAndSort = () => {
           style={{
             backgroundColor: colors.primary,
             color: 'white',
-            width: '100%',
           }}
           selectedValue={selectedFilter}
           placeholder="Filter"
@@ -138,7 +139,6 @@ export const FilterAndSort = () => {
           style={{
             backgroundColor: colors.primary,
             color: 'white',
-            // width: 120,
           }}
           selectedValue={selectedSort}
           onValueChange={handleSort}
