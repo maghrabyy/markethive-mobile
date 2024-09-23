@@ -13,14 +13,14 @@ import { useCallback } from 'react';
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 import { FilterAndSort } from '../../components/ProductListActions';
 import { CategoryHeader } from '../../components/CategoryHeader';
-
-export const bottomSheetRef = { current: null };
+import { useBottomSheetRef } from '../../context/Context Data/BottomSheetRefContext';
 
 export const ProductsScreen = () => {
   const route = useRoute();
   const { store } = route.params;
   const { prodListLayout } = useProductListLayout();
   const { isProductsLoading } = useProductsList();
+  const { bottomSheetRef } = useBottomSheetRef();
   return (
     <View style={{ flex: 1 }}>
       {isProductsLoading ? (

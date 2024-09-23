@@ -16,6 +16,7 @@ import { auth } from '../firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 import { ProductListLayoutProvider } from '../context/Context Data/ProductlistLayoutContext';
 import { ProductsListProvider } from '../context/Context Data/ProductListContext';
+import { BottomSheetRefProvider } from '../context/Context Data/BottomSheetRefContext';
 
 const Stack = createStackNavigator();
 
@@ -83,7 +84,9 @@ export const StackNavigation = () => {
         {({ route }) => (
           <ProductsListProvider route={route}>
             <ProductListLayoutProvider>
-              <ProductsScreen />
+              <BottomSheetRefProvider>
+                <ProductsScreen />
+              </BottomSheetRefProvider>
             </ProductListLayoutProvider>
           </ProductsListProvider>
         )}

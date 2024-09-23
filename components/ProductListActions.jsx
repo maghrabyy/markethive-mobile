@@ -7,10 +7,11 @@ import { Picker } from '@react-native-picker/picker';
 import { useEffect, useState } from 'react';
 import { IconButton } from 'react-native-paper';
 import FaIcon from 'react-native-vector-icons/FontAwesome';
-import { bottomSheetRef } from '../screens/authenticatedScreens/ProductsScreen';
+import { useBottomSheetRef } from '../context/Context Data/BottomSheetRefContext';
 
 export const ProductListActions = ({ paddingVertical, paddingHorizontal }) => {
   const { prodListLayout, setProdListLayout } = useProductListLayout();
+  const { bottomSheetRef } = useBottomSheetRef();
   return (
     <View
       style={{
