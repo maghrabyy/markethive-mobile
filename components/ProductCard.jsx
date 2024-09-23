@@ -1,4 +1,4 @@
-import { View, Text, Image } from 'react-native';
+import { View, Text, Image, TouchableOpacity } from 'react-native';
 import { IconButton, Avatar, MD3Colors } from 'react-native-paper';
 import FaIcon from 'react-native-vector-icons/FontAwesome';
 import { colors } from '../constants/colors';
@@ -6,8 +6,11 @@ import { useFetchStore } from '../Custom Hooks/useFetchStore';
 import { resW } from '../constants/dimensions';
 import { useFetchWishList } from '../Custom Hooks/useFetchWishList';
 import { useAddToCart } from '../Custom Hooks/useAddToCart';
+import { useNavigation } from '@react-navigation/native';
+import { routes } from '../utils/routes';
 
 export const ProductCard = ({ product, showStore = true }) => {
+  const { navigate } = useNavigation();
   const productPrice = product.discount
     ? product.price - product.price * product.discount
     : product.price;
@@ -17,7 +20,7 @@ export const ProductCard = ({ product, showStore = true }) => {
   );
   const { store, isStoreLoading } = useFetchStore(product.storeId);
   return (
-    <View
+    <TouchableOpacity
       style={{
         backgroundColor: 'white',
         elevation: 0.4,
@@ -25,6 +28,9 @@ export const ProductCard = ({ product, showStore = true }) => {
         overflow: 'hidden',
         width: resW(94),
         position: 'relative',
+      }}
+      onPress={() => {
+        navigate(routes.productDetails, { prodId: product.id });
       }}
     >
       <IconButton
@@ -112,6 +118,6 @@ export const ProductCard = ({ product, showStore = true }) => {
           )}
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };

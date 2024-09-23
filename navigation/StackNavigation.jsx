@@ -13,6 +13,7 @@ import { CustomAppBar } from '../components/CustomerAppbar';
 import { useState } from 'react';
 import { auth } from '../firebase';
 import { onAuthStateChanged } from 'firebase/auth';
+import ProductDetailsScreen from '../screens/authenticatedScreens/ProductDetailsScreen';
 
 const Stack = createStackNavigator();
 
@@ -63,6 +64,15 @@ export const StackNavigation = () => {
         options={({ navigation }) => ({
           header: () => (
             <CustomAppBar title="Profile" navigation={navigation} hideActions />
+          ),
+        })}
+      />
+      <Stack.Screen
+        name={routes.productDetails}
+        component={ProductDetailsScreen}
+        options={({ navigation }) => ({
+          header: () => (
+            <CustomAppBar title="Details" navigation={navigation} hideActions />
           ),
         })}
       />
