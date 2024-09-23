@@ -5,12 +5,68 @@ import { colors } from '../constants/colors';
 import { useProductsList } from '../context/Context Data/ProductListContext';
 import { Picker } from '@react-native-picker/picker';
 import { useEffect, useState } from 'react';
+import { IconButton } from 'react-native-paper';
+import FaIcon from 'react-native-vector-icons/FontAwesome';
+import { bottomSheetRef } from '../screens/authenticatedScreens/ProductsScreen';
 
 export const ProductListActions = ({ paddingVertical, paddingHorizontal }) => {
   const { prodListLayout, setProdListLayout } = useProductListLayout();
+  return (
+    <View
+      style={{
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        width: '100%',
+        paddingHorizontal,
+        paddingVertical,
+      }}
+    >
+      <IconButton
+        icon={() => <FaIcon name="sliders" size={24} />}
+        onPress={() => {
+          bottomSheetRef.current.snapToIndex(1);
+        }}
+      />
+      <View style={{ flexDirection: 'row', gap: 4 }}>
+        <Pressable
+          style={({ pressed }) => ({
+            backgroundColor: pressed
+              ? colors.lightGray
+              : prodListLayout === 'column'
+                ? colors.primary
+                : colors.gray,
+            padding: 6,
+            borderRadius: 8,
+          })}
+          onPress={() => setProdListLayout('column')}
+        >
+          <Octicon name="columns" size={18} color="white" />
+        </Pressable>
+        <Pressable
+          style={({ pressed }) => ({
+            backgroundColor: pressed
+              ? colors.lightGray
+              : prodListLayout === 'row'
+                ? colors.primary
+                : colors.gray,
+            padding: 6,
+            borderRadius: 8,
+          })}
+          onPress={() => setProdListLayout('row')}
+        >
+          <Octicon name="rows" size={18} color="white" />
+        </Pressable>
+      </View>
+    </View>
+  );
+};
+
+export const FilterAndSort = () => {
   const [selectedSort, setSelectedSort] = useState('');
   const [selectedFilter, setSelectedFilter] = useState('all');
   const { setProducts, allProducts } = useProductsList();
+
   useEffect(() => {
     setSelectedSort('');
   }, [selectedFilter]);
@@ -59,86 +115,44 @@ export const ProductListActions = ({ paddingVertical, paddingHorizontal }) => {
     ]);
   }
   return (
-    <View
-      style={{
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        width: '100%',
-        gap: 4,
-        paddingHorizontal,
-        paddingVertical,
-      }}
-    >
-      <View style={{ flexDirection: 'row', gap: 5 }}>
-        <View style={{ overflow: 'hidden', borderRadius: 12 }}>
-          <Picker
-            style={{
-              backgroundColor: colors.primary,
-              color: 'white',
-              width: 120,
-            }}
-            selectedValue={selectedFilter}
-            placeholder="Filter"
-            onValueChange={handleFilter}
-          >
-            <Picker.Item label="All" value="all" />
-            <Picker.Item label="Discount" value="discount" />
-            <Picker.Item label="Available" value="availability" />
-          </Picker>
-        </View>
-        <View style={{ overflow: 'hidden', borderRadius: 12 }}>
-          <Picker
-            placeholder="Sort by"
-            style={{
-              backgroundColor: colors.primary,
-              color: 'white',
-              width: 120,
-            }}
-            selectedValue={selectedSort}
-            onValueChange={handleSort}
-          >
-            <Picker.Item label="Sort By" value="" />
-            <Picker.Item label="Price - Low to High" value="priceAsc" />
-            <Picker.Item label="Price - High to Low" value="priceDesc" />
-            <Picker.Item label="Alphabetically - A to Z" value="nameAsc" />
-            <Picker.Item label="Alphabetically -  Z to A" value="nameDesc" />
-            <Picker.Item label="Most Recent" value="newToOld" />
-            <Picker.Item label="Old Products" value="oldToNew" />
-            <Picker.Item label="Highest Rate" value="highRate" />
-            <Picker.Item label="Lowest Rate" value="lowRate" />
-          </Picker>
-        </View>
+    <View style={{ gap: 5, width: '100%', padding: 8 }}>
+      <View style={{ overflow: 'hidden', borderRadius: 12 }}>
+        <Picker
+          style={{
+            backgroundColor: colors.primary,
+            color: 'white',
+            width: '100%',
+          }}
+          selectedValue={selectedFilter}
+          placeholder="Filter"
+          onValueChange={handleFilter}
+        >
+          <Picker.Item label="All" value="all" />
+          <Picker.Item label="Discount" value="discount" />
+          <Picker.Item label="Available" value="availability" />
+        </Picker>
       </View>
-      <View style={{ flexDirection: 'row', gap: 4 }}>
-        <Pressable
-          style={({ pressed }) => ({
-            backgroundColor: pressed
-              ? colors.lightGray
-              : prodListLayout === 'column'
-                ? colors.primary
-                : colors.gray,
-            padding: 6,
-            borderRadius: 8,
-          })}
-          onPress={() => setProdListLayout('column')}
+      <View style={{ overflow: 'hidden', borderRadius: 12 }}>
+        <Picker
+          placeholder="Sort by"
+          style={{
+            backgroundColor: colors.primary,
+            color: 'white',
+            // width: 120,
+          }}
+          selectedValue={selectedSort}
+          onValueChange={handleSort}
         >
-          <Octicon name="columns" size={18} color="white" />
-        </Pressable>
-        <Pressable
-          style={({ pressed }) => ({
-            backgroundColor: pressed
-              ? colors.lightGray
-              : prodListLayout === 'row'
-                ? colors.primary
-                : colors.gray,
-            padding: 6,
-            borderRadius: 8,
-          })}
-          onPress={() => setProdListLayout('row')}
-        >
-          <Octicon name="rows" size={18} color="white" />
-        </Pressable>
+          <Picker.Item label="Sort By" value="" />
+          <Picker.Item label="Price - Low to High" value="priceAsc" />
+          <Picker.Item label="Price - High to Low" value="priceDesc" />
+          <Picker.Item label="Alphabetically - A to Z" value="nameAsc" />
+          <Picker.Item label="Alphabetically -  Z to A" value="nameDesc" />
+          <Picker.Item label="Most Recent" value="newToOld" />
+          <Picker.Item label="Old Products" value="oldToNew" />
+          <Picker.Item label="Highest Rate" value="highRate" />
+          <Picker.Item label="Lowest Rate" value="lowRate" />
+        </Picker>
       </View>
     </View>
   );

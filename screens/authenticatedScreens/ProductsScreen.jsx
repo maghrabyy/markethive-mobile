@@ -11,22 +11,35 @@ import { useRoute } from '@react-navigation/native';
 import { useProductsList } from '../../context/Context Data/ProductListContext';
 import { ProductListActions } from '../../components/ProductListActions';
 import { useCallback } from 'react';
+import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
+import { FilterAndSort } from '../../components/ProductListActions';
+
+export const bottomSheetRef = { current: null };
 
 export const ProductsScreen = () => {
   const route = useRoute();
   const { store } = route.params;
   const { prodListLayout } = useProductListLayout();
   const { isProductsLoading } = useProductsList();
-  return isProductsLoading ? (
-    <View style={{ paddingVertical: 8 }}>
-      {Array.from(Array(4)).map((_, index) => (
-        <ProductSkeletonCard key={index} />
-      ))}
+  return (
+    <View>
+      {isProductsLoading ? (
+        <View style={{ paddingVertical: 8 }}>
+          {Array.from(Array(4)).map((_, index) => (
+            <ProductSkeletonCard key={index} />
+          ))}
+        </View>
+      ) : prodListLayout === 'column' ? (
+        <TwoColumnsProductsList store={store} />
+      ) : (
+        <OneColumnProductsList store={store} />
+      )}
+      <BottomSheet ref={bottomSheetRef} snapPoints={[1, '25%', '40%']}>
+        <BottomSheetView style={{ flex: 1, alignItems: 'center' }}>
+          <FilterAndSort />
+        </BottomSheetView>
+      </BottomSheet>
     </View>
-  ) : prodListLayout === 'column' ? (
-    <TwoColumnsProductsList store={store} />
-  ) : (
-    <OneColumnProductsList store={store} />
   );
 };
 
