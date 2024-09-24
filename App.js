@@ -1,28 +1,17 @@
-import { StatusBar } from 'expo-status-bar';
-import { useState } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
-import OnboardingScreen from './Screens/OnboardingScreen';
+import { NavigationContainer } from '@react-navigation/native';
+import { StackNavigation } from './navigation/StackNavigation';
+import { ContextProviders } from './context/ContextProviders';
+import Toast from 'react-native-toast-message';
 
 export default function App() {
-  const [showHomePage, setShowHomePage] = useState(false);
-
-  if (!showHomePage) {
-    return <OnboardingScreen setShowHomePage={setShowHomePage} />;
-  }
-
   return (
-    <View style={styles.container}>
-      <Text> Home Screen</Text>
-      <StatusBar style="auto" />
-    </View>
+    <>
+      <ContextProviders>
+        <NavigationContainer>
+          <StackNavigation />
+        </NavigationContainer>
+      </ContextProviders>
+      <Toast position="bottom" />
+    </>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

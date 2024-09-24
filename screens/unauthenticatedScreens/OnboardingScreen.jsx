@@ -1,10 +1,13 @@
-import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import AppIntroSlider from 'react-native-app-intro-slider';
-import EcommerceImg from '../assets/ecommerce.svg';
-import MarketsImg from '../assets/markets.svg';
-import DeliveryImg from '../assets/delivery.svg';
-import { COLORS, SIZES } from '../src/constants/theme';
+import EcommerceImg from '../../assets/ecommerce.svg';
+import MarketsImg from '../../assets/markets.svg';
+import DeliveryImg from '../../assets/delivery.svg';
+// import { useNavigation } from '@react-navigation/native';
+import storage from '../../storage';
+import { useIsFirstUsage } from '../../context/Context Data/IsFirstUsageContext';
+import { colors } from '../../constants/colors';
+import { SIZES } from '../../constants/constant';
 
 const slides = [
   {
@@ -30,13 +33,19 @@ const slides = [
   },
 ];
 
-const OnboardingScreen = ({ setShowHomePage }) => {
+export const OnboardingScreen = () => {
+  // const navigation = useNavigation();
+  const { setIsFirstUsage } = useIsFirstUsage();
+  const handleGetStartedBtn = async () => {
+    await storage.save({ key: 'firstUsage', data: false });
+    setIsFirstUsage(false);
+  };
   const buttonLabel = (label) => {
     return (
       <View style={{ padding: 12 }}>
         <Text
           style={{
-            color: COLORS.title,
+            color: colors.title,
             fontWeight: '600',
             fontSize: SIZES.h4,
           }}
@@ -57,11 +66,11 @@ const OnboardingScreen = ({ setShowHomePage }) => {
         </View>
       )}
       showSkipButton
-      activeDotStyle={{ backgroundColor: COLORS.primary, width: 30 }}
+      activeDotStyle={{ backgroundColor: colors.primary, width: 30 }}
       renderNextButton={() => buttonLabel('Next')}
       renderSkipButton={() => buttonLabel('Skip')}
       renderDoneButton={() => buttonLabel('Get Start')}
-      onDone={() => setShowHomePage(true)}
+      onDone={handleGetStartedBtn}
     />
   );
 };
@@ -75,7 +84,6 @@ const styles = StyleSheet.create({
   },
   slideTitle: {
     fontSize: 20,
-    // paddingHorizontal: 2,
     fontWeight: 'bold',
     marginTop: 20,
   },
@@ -84,5 +92,3 @@ const styles = StyleSheet.create({
     padding: 10,
   },
 });
-
-export default OnboardingScreen;
