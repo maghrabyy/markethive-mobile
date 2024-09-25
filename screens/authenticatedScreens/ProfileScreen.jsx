@@ -77,6 +77,7 @@ export const ProfileScreen = ({ navigation }) => {
         {actions.map((item, index) => (
           <TouchableOpacity
             key={index}
+            activeOpacity={0.7}
             style={styles.toucableVeiw}
             onPress={() => item.fun()}
           >
