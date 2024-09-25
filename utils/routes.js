@@ -8,4 +8,5 @@ export const routes = {
   productDetails: 'productDetails',
   orders: 'orders',
   products: 'products',
+  wishlist: 'wishlist',
 };

@@ -35,7 +35,7 @@ export const ProfileScreen = ({ navigation }) => {
       img: require('../../assets/wishlist.png'),
       title: 'My Wishlist',
       fun: function () {
-        navigation.navigate(routes.homeScreen);
+        navigation.navigate(routes.wishlist);
       },
       color: '#85c1e9',
     },

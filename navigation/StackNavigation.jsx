@@ -19,6 +19,7 @@ import OrdersScreen from '../screens/authenticatedScreens/OrdersScreen';
 import { ProductListLayoutProvider } from '../context/Context Data/ProductlistLayoutContext';
 import { ProductsListProvider } from '../context/Context Data/ProductListContext';
 import { BottomSheetRefProvider } from '../context/Context Data/BottomSheetRefContext';
+import { WishlistScreen } from '../screens/authenticatedScreens/WishlistScreen';
 
 const Stack = createStackNavigator();
 
@@ -57,6 +58,19 @@ export const StackNavigation = () => {
           header: () => (
             <CustomAppBar
               title="Shopping Cart"
+              navigation={navigation}
+              hideActions
+            />
+          ),
+        })}
+      />
+      <Stack.Screen
+        name={routes.wishlist}
+        component={WishlistScreen}
+        options={({ navigation }) => ({
+          header: () => (
+            <CustomAppBar
+              title="Wishlist"
               navigation={navigation}
               hideActions
             />
