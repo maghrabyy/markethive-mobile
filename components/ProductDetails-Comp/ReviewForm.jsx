@@ -3,6 +3,14 @@ import { StyleSheet, Text, View } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
 import { colors } from '../../constants/colors';
 import StarRating from 'react-native-star-rating-widget';
+import {
+  addDoc,
+  collection,
+  updateDoc,
+  doc,
+  arrayUnion,
+} from 'firebase/firestore';
+import { db, auth } from '../../firebase';
 
 export const ReviewForm = ({ productId }) => {
   const [reviewTitle, setReviewTitle] = useState('');
@@ -33,6 +41,8 @@ export const ReviewForm = ({ productId }) => {
       } catch (error) {
         console.log(error.message);
       }
+    } else {
+      console.log('test');
     }
   };
   return (
@@ -72,7 +82,7 @@ export const ReviewForm = ({ productId }) => {
         />
         <Button
           mode="contained"
-          onPress={() => reviewSubmitHandler}
+          onPress={reviewSubmitHandler}
           loading={submitLoading}
           style={{ borderRadius: 8 }}
           buttonColor={colors.primary}
