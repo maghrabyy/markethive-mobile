@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { useFetchProduct } from '../Custom Hooks/useFetchProduct';
 import { Divider } from 'react-native-paper';
@@ -7,8 +7,16 @@ import { COLORS, SIZES } from '../src/constants/theme';
 import { OrderSkeletonCard } from './CardSkeleton';
 import { resW } from '../constants/dimensions';
 
-const ProductDetails = ({ productId, subtotal, quantity }) => {
+const OrderProductInfo = ({
+  productId,
+  subtotal,
+  quantity,
+  productLoading,
+}) => {
   const { product, isProductLoading, store } = useFetchProduct(productId);
+  useEffect(() => {
+    productLoading(isProductLoading);
+  }, [isProductLoading]);
   return (
     <View>
       {isProductLoading ? (
@@ -62,4 +70,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ProductDetails;
+export default OrderProductInfo;

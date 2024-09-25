@@ -2,7 +2,7 @@ import { View } from 'react-native';
 import { createShimmerPlaceholder } from 'react-native-shimmer-placeholder';
 import { resW } from '../constants/dimensions';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Card } from 'react-native-paper';
+
 const ShimmerPlaceholder = createShimmerPlaceholder(LinearGradient);
 
 export const ProductSkeletonCard = () => {
@@ -56,30 +56,20 @@ export const CollectionSkeletonCard = ({
 export const OrderSkeletonCard = (style, width = resW(45), height = 200) => {
   return (
     <View
-      style={[
-        {
-          height: height,
-          width: width,
-          borderRadius: 8,
-          overflow: 'hidden',
-          backgroundColor: '#fffff4',
-          elevation: 0.5,
-          gap: 4,
-          alignItems: 'center',
-          justifyContent: 'center',
-        },
-        style,
-      ]}
+      style={{
+        flexDirection: 'row',
+        gap: 10,
+        paddingHorizontal: 13,
+        paddingVertical: 13,
+      }}
     >
-      <View style={{ flexDirection: 'row', gap: 10, paddingHorizontal: 16 }}>
-        <ShimmerPlaceholder
-          style={{ width: '50%', height: 100, borderRadius: 25 }}
-        />
-        <View style={{ gap: 15, alignSelf: 'center' }}>
-          <ShimmerPlaceholder style={{ width: '80%', height: 12 }} />
-          <ShimmerPlaceholder style={{ width: '80%', height: 12 }} />
-          <ShimmerPlaceholder style={{ width: '80%', height: 12 }} />
-        </View>
+      <ShimmerPlaceholder
+        style={{ width: '50%', height: 100, borderRadius: 25 }}
+      />
+      <View style={{ gap: 15, alignSelf: 'center' }}>
+        <ShimmerPlaceholder style={{ width: '80%', height: 12 }} />
+        <ShimmerPlaceholder style={{ width: '80%', height: 12 }} />
+        <ShimmerPlaceholder style={{ width: '80%', height: 12 }} />
       </View>
     </View>
   );

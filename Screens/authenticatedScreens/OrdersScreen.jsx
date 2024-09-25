@@ -1,23 +1,48 @@
-import React from 'react';
-import { StyleSheet, View, Text, FlatList, Button } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import React, { useState } from 'react';
+import { StyleSheet, View, Text, FlatList } from 'react-native';
 import { useFetchOrders } from '../../Custom Hooks/useFetchOrders';
 import { Card } from 'react-native-paper';
-import ProductDetails from '../../components/ProductDetails';
 import { SIZES } from '../../constants/constant';
 import { COLORS } from '../../src/constants/theme';
 import { EmptyList } from '../../components/EmptyList';
 import { useNavigation } from '@react-navigation/native';
+import { OrderSkeletonCard } from '../../components/CardSkeleton';
+import { ScreenLoader } from '../../components/ScreenLoader';
+import OrderProductInfo from '../../components/OrderProductInfo';
 
 const OrdersScreen = () => {
   const { order, isOrderLoading } = useFetchOrders();
+  const [isProductLoading, setIsProductLoading] = useState(false);
   const navigation = useNavigation();
+
+  function productLoading(isLoading) {
+    setIsProductLoading(isLoading);
+  }
+
+  if (!order[0]) {
+    return (
+      <EmptyList
+        text={
+          <>
+            There are no orders here. You can go{' '}
+            <Text style={{ color: 'blue' }} onPress={() => navigation.goBack()}>
+              back
+            </Text>
+          </>
+        }
+        type="orders"
+      />
+    );
+  }
 
   return (
     <>
-      {order[0] ? (
+      {isOrderLoading ? (
+        <ScreenLoader />
+      ) : (
         <FlatList
           data={order}
+          keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
             <Card style={styles.cardContainer}>
               <Card.Title
@@ -72,32 +97,18 @@ const OrdersScreen = () => {
                   </Text>
                 </View>
                 {item.products.map((prod) => (
-                  <View>
-                    <ProductDetails
+                  <View key={prod.prodId}>
+                    <OrderProductInfo
                       productId={prod.prodId}
                       subtotal={prod.subTotal.toLocaleString()}
                       quantity={prod.quantity}
+                      productLoading={productLoading}
                     />
                   </View>
                 ))}
               </Card.Content>
             </Card>
           )}
-        />
-      ) : (
-        <EmptyList
-          text={
-            <>
-              There are no orders here. You can go{' '}
-              <Text
-                style={{ color: 'blue' }}
-                onPress={() => navigation.goBack()}
-              >
-                back
-              </Text>
-            </>
-          }
-          type="orders"
         />
       )}
     </>
