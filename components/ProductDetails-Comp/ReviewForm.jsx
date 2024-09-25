@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
-import { Rating } from 'react-native-ratings';
 import { colors } from '../../constants/colors';
+import StarRating from 'react-native-star-rating-widget';
 
 export const ReviewForm = ({ productId }) => {
   const [reviewTitle, setReviewTitle] = useState('');
@@ -64,11 +64,11 @@ export const ReviewForm = ({ productId }) => {
           marginVertical: 5,
         }}
       >
-        <Rating
-          imageSize={25}
-          startingValue={0}
-          style={{ paddingVertical: 10 }}
-          onFinishRating={(val) => setReviewRate(val)}
+        <StarRating
+          starStyle={{ width: 20 }}
+          onChange={setReviewRate}
+          rating={reviewRate}
+          enableHalfStar
         />
         <Button
           mode="contained"
