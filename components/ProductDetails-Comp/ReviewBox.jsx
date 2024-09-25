@@ -24,10 +24,9 @@ export const ReviewBox = ({ review }) => {
             flexDirection: 'row',
             justifyContent: 'space-between',
             marginHorizontal: 5,
-            marginVertical: 10,
             backgroundColor: 'white',
             borderRadius: 10,
-            paddingHorizontal: 6,
+            padding: 8,
           }}
         >
           <View>

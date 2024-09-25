@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { auth } from '../../firebase';
 import { useAddToCart } from '../../Custom Hooks/useAddToCart';
@@ -68,12 +68,13 @@ export const ProductDetails = ({ product, store, reviews }) => {
           {product.title}
         </Text>
       </View>
-      <View style={{ position: 'relative' }}>
+      <View style={{ position: 'relative', alignItems: 'center' }}>
         {Number(product.discount) > 0 && (
           <View
             style={{
               backgroundColor: 'red',
               position: 'absolute',
+              left: 0,
               padding: 8,
               zIndex: 20,
               borderBottomEndRadius: 15,
@@ -88,7 +89,11 @@ export const ProductDetails = ({ product, store, reviews }) => {
         <Image
           source={{ uri: product.images[activeImage] }}
           alt={product.title}
-          style={{ width: 350, height: 350, marginHorizontal: 5 }}
+          style={{
+            width: 350,
+            height: 350,
+            marginHorizontal: 5,
+          }}
         />
         <IconButton
           style={{ position: 'absolute', top: 0, right: 10, zIndex: 10 }}
@@ -151,7 +156,11 @@ export const ProductDetails = ({ product, store, reviews }) => {
         }}
       >
         <View style={{ flexDirection: 'row' }}>
-          <Rating readonly={true} startingValue={avgRate} imageSize={25} />
+          <Rating
+            readonly={true}
+            startingValue={isNaN(avgRate) ? 0 : avgRate}
+            imageSize={25}
+          />
           <Text style={{ paddingLeft: 5, paddingTop: 3 }}>
             ({reviews.length.toLocaleString()})
           </Text>

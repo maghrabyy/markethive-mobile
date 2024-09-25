@@ -28,6 +28,7 @@ export default function SearchScreen() {
       <FlatList
         contentContainerStyle={{ alignItems: 'center' }}
         data={searchProducts}
+        showsVerticalScrollIndicator={false}
         ItemSeparatorComponent={() => <View height={8} />}
         ListEmptyComponent={() => <EmptyList text="Nothing is found here." />}
         renderItem={({ item }) => (
@@ -63,7 +64,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    padding: 16,
+    paddingVertical: 12,
   },
   searchContainer: {
     width: resW(95),

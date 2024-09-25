@@ -44,7 +44,7 @@ export const ReviewForm = ({ productId }) => {
         placeholder="Review Title"
         value={reviewTitle}
         onChangeText={(title) => setReviewTitle(title)}
-        style={{ marginVertical: 10 }}
+        style={{ marginVertical: 10, backgroundColor: 'transparent' }}
         outlineColor={colors.primary}
       />
       <TextInput
@@ -54,6 +54,7 @@ export const ReviewForm = ({ productId }) => {
         onChangeText={(message) => setReviewMessage(message)}
         multiline={true}
         numberOfLines={4}
+        style={{ backgroundColor: 'transparent', paddingTop: 8 }}
         outlineColor={colors.primary}
       />
       <View
