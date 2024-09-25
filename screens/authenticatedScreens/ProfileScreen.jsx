@@ -7,11 +7,9 @@ import {
   StyleSheet,
 } from 'react-native';
 import { resH, resW } from '../../constants/dimensions';
-import { useEffect, useState } from 'react';
 import { Avatar } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { routes } from '../../utils/routes';
-import { colors } from '../../constants/colors';
 import { auth } from '../../firebase';
 import { Alert } from 'react-native';
 
@@ -19,7 +17,7 @@ export const ProfileScreen = ({ navigation }) => {
   var actions = [
     {
       img: require('../../assets/shopping-bags.png'),
-      title: 'My Order',
+      title: 'My Orders',
       fun: function () {
         navigation.navigate(routes.homeScreen);
       },
@@ -45,73 +43,66 @@ export const ProfileScreen = ({ navigation }) => {
       img: require('../../assets/logout.png'),
       title: 'Logout',
       fun: function () {
-        Alert.alert(
-          'Logout', // Title of the alert
-          'Are you sure you need to log out', // Message of the alert
-          [
-            {
-              text: 'Cancel',
-            },
-            { text: 'OK', onPress: () => auth.signOut() },
-          ],
-        );
+        Alert.alert('Logout', 'Are you sure you need to log out', [
+          {
+            text: 'Cancel',
+          },
+          { text: 'OK', onPress: signOutHandler },
+        ]);
       },
       color: '#ec7063',
     },
   ];
-  const [username, setusername] = useState('ff')||[];
-  useEffect(() => {
-    setusername(auth.currentUser.displayName);
-  }, []);
+  const signOutHandler = () => {
+    auth.signOut();
+    navigation.navigate(routes.welcomeScreen);
+  };
+  const displayName = auth.currentUser.displayName;
   return (
-    <>
-      <ImageBackground
-        source={require('../../assets/back.png')}
-        style={{ flex: 1, marginTop: -20 }}
-      >
-        <View style={styles.avatarVeiw}>
-          <Avatar.Text
-            size={100}
-            label={username[0]}
-            color="white"
-            style={{ backgroundColor: 'orange' }}
-          />
-          <Text style={styles.nameTxt}>{username}</Text>
-        </View>
-        <View style={styles.bottomVeiw}>
-          <Text style={styles.bottomVeiwHeader}>Account overveiw</Text>
-          {actions.map((item, index) => (
-            <>
-              <TouchableOpacity
-                key={index}
-                style={styles.toucableVeiw}
-                onPress={() => item.fun()}
-              >
-                <View style={styles.iconVeiw}>
-                <View style={[styles.icon, { backgroundColor: item.color }]}>
-                    <Image
-                      source={item.img}
-                      style={{
-                        width: '50%',
-                        height: '50%',
-                        resizeMode: 'contain',
-                      }}
-                    />
-                  </View>
-                </View>
-                <View style={styles.txtVeiw}>
-                  <Text style={styles.icontxt}>{item.title}</Text>
-                </View>
+    <ImageBackground
+      source={require('../../assets/back.png')}
+      style={{ flex: 1, marginTop: -20 }}
+    >
+      <View style={styles.avatarVeiw}>
+        <Avatar.Text
+          size={100}
+          label={displayName[0]}
+          color="white"
+          style={{ backgroundColor: 'orange' }}
+        />
+        <Text style={styles.nameTxt}>{displayName}</Text>
+      </View>
+      <View style={styles.bottomVeiw}>
+        <Text style={styles.bottomVeiwHeader}>Account overview</Text>
+        {actions.map((item, index) => (
+          <TouchableOpacity
+            key={index}
+            style={styles.toucableVeiw}
+            onPress={() => item.fun()}
+          >
+            <View style={styles.iconVeiw}>
+              <View style={[styles.icon, { backgroundColor: item.color }]}>
+                <Image
+                  source={item.img}
+                  style={{
+                    width: '50%',
+                    height: '50%',
+                    resizeMode: 'contain',
+                  }}
+                />
+              </View>
+            </View>
+            <View style={styles.txtVeiw}>
+              <Text style={styles.icontxt}>{item.title}</Text>
+            </View>
 
-                <View style={styles.goVeiw}>
-                  <Icon name="chevron-right" size={20} color="black" />
-                </View>
-              </TouchableOpacity>
-            </>
-          ))}
-        </View>
-      </ImageBackground>
-    </>
+            <View style={styles.goVeiw}>
+              <Icon name="chevron-right" size={20} color="black" />
+            </View>
+          </TouchableOpacity>
+        ))}
+      </View>
+    </ImageBackground>
   );
 };
 
@@ -123,7 +114,7 @@ const styles = StyleSheet.create({
   },
   nameTxt: {
     fontSize: 25,
-    fontWeight:'500',
+    fontWeight: '500',
     color: 'white',
     marginTop: 15,
   },
@@ -169,7 +160,7 @@ const styles = StyleSheet.create({
   },
   icontxt: {
     fontSize: 18,
-    fontWeight:'400',
+    fontWeight: '400',
     color: 'black',
     marginVertical: 15,
   },
