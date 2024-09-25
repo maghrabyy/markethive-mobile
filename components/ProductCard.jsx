@@ -1,4 +1,4 @@
-import { View, Text, Image } from 'react-native';
+import { View, Text, Image, TouchableOpacity } from 'react-native';
 import { IconButton, Button, Avatar, MD3Colors } from 'react-native-paper';
 import FaIcon from 'react-native-vector-icons/FontAwesome';
 import { colors } from '../constants/colors';
@@ -6,12 +6,39 @@ import { useFetchStore } from '../Custom Hooks/useFetchStore';
 import { resW } from '../constants/dimensions';
 import { useFetchWishList } from '../Custom Hooks/useFetchWishList';
 import { useAddToCart } from '../Custom Hooks/useAddToCart';
+import { useNavigation } from '@react-navigation/native';
+import { routes } from '../utils/routes';
 
 export const ProductCard = ({
   product,
   showStore = true,
   width = resW(94),
+  mode = 'oneColumn',
 }) => {
+  if (mode === 'oneColumn')
+    return (
+      <OneColumnProductCard
+        product={product}
+        showStore={showStore}
+        width={width}
+      />
+    );
+  if (mode === 'twoColumn')
+    return (
+      <TwoColumnProductCard
+        product={product}
+        showStore={showStore}
+        width={width}
+      />
+    );
+};
+
+export const OneColumnProductCard = ({
+  product,
+  showStore = true,
+  width = resW(94),
+}) => {
+  const { navigate } = useNavigation();
   const productPrice = product.discount
     ? product.price - product.price * product.discount
     : product.price;
@@ -21,7 +48,9 @@ export const ProductCard = ({
   );
   const { store, isStoreLoading } = useFetchStore(product.storeId);
   return (
-    <View
+    <TouchableOpacity
+      activeOpacity={0.8}
+      onPress={() => navigate(routes.productDetails, { prodId: product.id })}
       style={{
         backgroundColor: 'white',
         elevation: 0.4,
@@ -140,15 +169,16 @@ export const ProductCard = ({
           </View>
         )}
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
-export const TwpColumnProductCard = ({
+export const TwoColumnProductCard = ({
   product,
   showStore = true,
   width = resW(47),
 }) => {
+  const { navigate } = useNavigation();
   const productPrice = product.discount
     ? product.price - product.price * product.discount
     : product.price;
@@ -158,7 +188,8 @@ export const TwpColumnProductCard = ({
   );
   const { store, isStoreLoading } = useFetchStore(product.storeId);
   return (
-    <View
+    <TouchableOpacity
+      activeOpacity={0.8}
       style={{
         backgroundColor: 'white',
         elevation: 0.4,
@@ -166,6 +197,9 @@ export const TwpColumnProductCard = ({
         overflow: 'hidden',
         width: width,
         position: 'relative',
+      }}
+      onPress={() => {
+        navigate(routes.productDetails, { prodId: product.id });
       }}
     >
       <IconButton
@@ -253,6 +287,6 @@ export const TwpColumnProductCard = ({
           )}
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };

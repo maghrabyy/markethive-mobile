@@ -5,6 +5,7 @@ export const routes = {
   homeScreen: 'HomeLayout',
   shoppingCart: 'shoppingCart',
   profile: 'profile',
+  productDetails: 'productDetails',
   orders: 'orders',
   products: 'products',
 };

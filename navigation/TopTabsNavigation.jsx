@@ -8,6 +8,7 @@ import IonIcon from 'react-native-vector-icons/Ionicons';
 import { colors } from '../constants/colors';
 import { StyleSheet } from 'react-native';
 import { resH } from '../constants/dimensions';
+import SearchScreen from '../screens/authenticatedScreens/SearchScreen';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -25,15 +26,6 @@ export const TopTabsNavigation = () => {
       }}
     >
       <Tab.Screen
-        name="Stores"
-        component={StoresScreen}
-        options={{
-          tabBarIcon: ({ color }) => (
-            <Fa5Icon name="store" color={color} size={20} />
-          ),
-        }}
-      />
-      <Tab.Screen
         name="Home"
         component={HomeScreen}
         options={{
@@ -43,11 +35,30 @@ export const TopTabsNavigation = () => {
         }}
       />
       <Tab.Screen
+        name="Stores"
+        component={StoresScreen}
+        options={{
+          tabBarIcon: ({ color }) => (
+            <Fa5Icon name="store" color={color} size={20} />
+          ),
+        }}
+      />
+      <Tab.Screen
         name="Categories"
         component={CategoriesScreen}
         options={{
+          tabBarLabelStyle: { fontSize: 11 },
           tabBarIcon: ({ color }) => (
             <IonIcon name="grid" color={color} size={24} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Search"
+        component={SearchScreen}
+        options={{
+          tabBarIcon: ({ color }) => (
+            <IonIcon name="search" color={color} size={24} />
           ),
         }}
       />

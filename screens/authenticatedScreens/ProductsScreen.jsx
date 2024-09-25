@@ -1,7 +1,7 @@
 import { View, FlatList } from 'react-native';
 import {
   ProductCard,
-  TwpColumnProductCard,
+  TwoColumnProductCard,
 } from '../../components/ProductCard';
 import { ProductSkeletonCard } from '../../components/CardSkeleton';
 import { EmptyList } from '../../components/EmptyList';
@@ -14,6 +14,7 @@ import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 import { FilterAndSort } from '../../components/ProductListActions';
 import { CategoryHeader } from '../../components/CategoryHeader';
 import { useBottomSheetRef } from '../../context/Context Data/BottomSheetRefContext';
+import { resW } from '../../constants/dimensions';
 
 export const ProductsScreen = () => {
   const route = useRoute();
@@ -53,7 +54,12 @@ const TwoColumnsProductsList = ({ store }) => {
       <FlatList
         data={products}
         renderItem={({ item: product }) => (
-          <TwpColumnProductCard product={product} showStore={!store} />
+          <ProductCard
+            product={product}
+            showStore={!store}
+            mode="twoColumn"
+            width={resW(47)}
+          />
         )}
         columnWrapperStyle={{ gap: 4 }}
         numColumns={2}
