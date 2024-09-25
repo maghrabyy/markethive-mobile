@@ -26,7 +26,7 @@ export default function SearchScreen() {
       </View>
 
       <FlatList
-        contentContainerStyle={{ alignItems: 'center', flex: 1 }}
+        contentContainerStyle={{ alignItems: 'center' }}
         data={searchProducts}
         showsVerticalScrollIndicator={false}
         ItemSeparatorComponent={() => <View height={8} />}
@@ -36,8 +36,6 @@ export default function SearchScreen() {
           ) : (
             <View
               style={{
-                flex: 1,
-                justifyContent: 'center',
                 gap: 4,
                 paddingHorizontal: 12,
               }}
@@ -85,7 +83,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    paddingVertical: 12,
+    paddingTop: 12,
   },
   searchContainer: {
     width: resW(95),
