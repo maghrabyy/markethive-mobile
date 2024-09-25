@@ -5,8 +5,11 @@ import { FlatList } from 'react-native-gesture-handler';
 import { EmptyList } from '../../components/EmptyList';
 import { useProductSearch } from '../../Custom Hooks/useProductSearch';
 import { resW } from '../../constants/dimensions';
+import { useNavigation } from '@react-navigation/native';
+import { routes } from '../../utils/routes';
 
-export default function SearchScreen({ navigation }) {
+export default function SearchScreen() {
+  const { navigate } = useNavigation();
   const [text, setText] = useState('');
   const { searchProducts, getStoreNameFromId } = useProductSearch(text);
 
@@ -29,9 +32,9 @@ export default function SearchScreen({ navigation }) {
         ListEmptyComponent={() => <EmptyList text="Nothing is found here." />}
         renderItem={({ item }) => (
           <TouchableOpacity
-            onPress={() =>
-              navigation.navigate('ProductDetails', { productId: item.id })
-            }
+            onPress={() => {
+              navigate(routes.productDetails, { prodId: item.id });
+            }}
           >
             <View style={styles.itemContainer}>
               <View style={styles.itemContent}>
