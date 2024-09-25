@@ -1,7 +1,7 @@
 import { View } from 'react-native';
 import { createShimmerPlaceholder } from 'react-native-shimmer-placeholder';
-import { LinearGradient } from 'expo-linear-gradient';
 import { resW } from '../constants/dimensions';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const ShimmerPlaceholder = createShimmerPlaceholder(LinearGradient);
 
@@ -49,6 +49,28 @@ export const CollectionSkeletonCard = ({
     >
       <ShimmerPlaceholder height="78%" />
       <ShimmerPlaceholder height="22%" />
+    </View>
+  );
+};
+
+export const OrderSkeletonCard = (style, width = resW(45), height = 200) => {
+  return (
+    <View
+      style={{
+        flexDirection: 'row',
+        gap: 10,
+        paddingHorizontal: 13,
+        paddingVertical: 13,
+      }}
+    >
+      <ShimmerPlaceholder
+        style={{ width: '50%', height: 100, borderRadius: 25 }}
+      />
+      <View style={{ gap: 15, alignSelf: 'center' }}>
+        <ShimmerPlaceholder style={{ width: '80%', height: 12 }} />
+        <ShimmerPlaceholder style={{ width: '80%', height: 12 }} />
+        <ShimmerPlaceholder style={{ width: '80%', height: 12 }} />
+      </View>
     </View>
   );
 };

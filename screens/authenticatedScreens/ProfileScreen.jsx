@@ -19,7 +19,7 @@ export const ProfileScreen = ({ navigation }) => {
       img: require('../../assets/shopping-bags.png'),
       title: 'My Orders',
       fun: function () {
-        navigation.navigate(routes.homeScreen);
+        navigation.navigate(routes.orders);
       },
       color: '#f8c471',
     },

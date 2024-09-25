@@ -14,6 +14,7 @@ import { CustomAppBar } from '../components/CustomerAppbar';
 import { useState } from 'react';
 import { auth } from '../firebase';
 import { onAuthStateChanged } from 'firebase/auth';
+import OrdersScreen from '../screens/authenticatedScreens/OrdersScreen';
 import { ProductListLayoutProvider } from '../context/Context Data/ProductlistLayoutContext';
 import { ProductsListProvider } from '../context/Context Data/ProductListContext';
 import { BottomSheetRefProvider } from '../context/Context Data/BottomSheetRefContext';
@@ -67,6 +68,15 @@ export const StackNavigation = () => {
         options={({ navigation }) => ({
           header: () => (
             <CustomAppBar title="Profile" navigation={navigation} hideActions />
+          ),
+        })}
+      />
+      <Stack.Screen
+        name={routes.orders}
+        component={OrdersScreen}
+        options={({ navigation }) => ({
+          header: () => (
+            <CustomAppBar title="Orders" navigation={navigation} hideActions />
           ),
         })}
       />
