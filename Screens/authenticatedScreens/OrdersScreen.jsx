@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { StyleSheet, View, Text, FlatList } from 'react-native';
 import { useFetchOrders } from '../../Custom Hooks/useFetchOrders';
 import { Card } from 'react-native-paper';
@@ -6,18 +6,12 @@ import { SIZES } from '../../constants/constant';
 import { COLORS } from '../../src/constants/theme';
 import { EmptyList } from '../../components/EmptyList';
 import { useNavigation } from '@react-navigation/native';
-import { OrderSkeletonCard } from '../../components/CardSkeleton';
 import { ScreenLoader } from '../../components/ScreenLoader';
 import OrderProductInfo from '../../components/OrderProductInfo';
 
 const OrdersScreen = () => {
   const { order, isOrderLoading } = useFetchOrders();
-  const [isProductLoading, setIsProductLoading] = useState(false);
   const navigation = useNavigation();
-
-  function productLoading(isLoading) {
-    setIsProductLoading(isLoading);
-  }
 
   if (!order[0]) {
     return (
@@ -102,7 +96,6 @@ const OrdersScreen = () => {
                       productId={prod.prodId}
                       subtotal={prod.subTotal.toLocaleString()}
                       quantity={prod.quantity}
-                      productLoading={productLoading}
                     />
                   </View>
                 ))}
