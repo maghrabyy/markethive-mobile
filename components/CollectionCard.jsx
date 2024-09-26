@@ -14,6 +14,7 @@ export const CollectionCard = ({
   const navigation = useNavigation();
   return (
     <TouchableOpacity
+      activeOpacity={0.8}
       onPress={() => {
         navigation.navigate(routes.products, params);
       }}
