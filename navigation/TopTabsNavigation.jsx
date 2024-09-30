@@ -1,4 +1,5 @@
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+
 import { HomeScreen } from '../screens/authenticatedScreens/HomeScreen';
 import { StoresScreen } from '../screens/authenticatedScreens/StoresScreen';
 import { CategoriesScreen } from '../screens/authenticatedScreens/CategoriesScreen';

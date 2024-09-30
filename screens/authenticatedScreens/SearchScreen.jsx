@@ -1,5 +1,12 @@
-import { View, StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
-import React, { useState } from 'react';
+import {
+  View,
+  StyleSheet,
+  Text,
+  Image,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native';
+import React, { useState, useEffect } from 'react';
 import { Searchbar } from 'react-native-paper';
 import { FlatList } from 'react-native-gesture-handler';
 import { EmptyList } from '../../components/EmptyList';
@@ -11,7 +18,28 @@ import { routes } from '../../utils/routes';
 export default function SearchScreen() {
   const { navigate } = useNavigation();
   const [text, setText] = useState('');
-  const { searchProducts, getStoreNameFromId } = useProductSearch(text);
+  const [debouncedText, setDebouncedText] = useState(text);
+  const [loading, setLoading] = useState(false);
+  const { searchProducts, getStoreNameFromId, error } =
+    useProductSearch(debouncedText);
+
+  // Debounce the search text to avoid excessive API calls
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      setDebouncedText(text);
+    }, 300); // 300ms debounce
+
+    return () => clearTimeout(timeoutId);
+  }, [text]);
+
+  // Show loading indicator while search is in progress
+  useEffect(() => {
+    if (text !== debouncedText) {
+      setLoading(true);
+    } else {
+      setLoading(false);
+    }
+  }, [text, debouncedText]);
 
   return (
     <View style={styles.container}>
@@ -25,36 +53,49 @@ export default function SearchScreen() {
         />
       </View>
 
-      <FlatList
-        contentContainerStyle={{ alignItems: 'center' }}
-        data={searchProducts}
-        ItemSeparatorComponent={() => <View height={8} />}
-        ListEmptyComponent={() => <EmptyList text="Nothing is found here." />}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            onPress={() => {
-              navigate(routes.productDetails, { prodId: item.id });
-            }}
-          >
-            <View style={styles.itemContainer}>
-              <View style={styles.itemContent}>
-                <Image
-                  source={{ uri: item.images[0] }}
-                  style={styles.itemImage}
-                  accessibilityLabel={item.title}
-                />
-                <Text style={styles.itemTitle} numberOfLines={3}>
-                  {item.title}
+      {loading && <ActivityIndicator size="large" color="#0000ff" />}
+
+      {error && (
+        <Text style={styles.errorText}>
+          Failed to load products. Please try again.
+        </Text>
+      )}
+
+      {!loading && !error && (
+        <FlatList
+          contentContainerStyle={{ alignItems: 'center' }}
+          data={searchProducts}
+          ItemSeparatorComponent={() => <View height={8} />}
+          ListEmptyComponent={() => <EmptyList text="Nothing is found here." />}
+          renderItem={({ item }) => (
+            <TouchableOpacity
+              onPress={() => {
+                navigate(routes.productDetails, { prodId: item.id });
+              }}
+            >
+              <View style={styles.itemContainer}>
+                <View style={styles.itemContent}>
+                  <Image
+                    source={{
+                      uri:
+                        item.images?.[0] || 'https://via.placeholder.com/150',
+                    }} // Fallback if no image
+                    style={styles.itemImage}
+                    accessibilityLabel={item.title}
+                  />
+                  <Text style={styles.itemTitle} numberOfLines={3}>
+                    {item.title}
+                  </Text>
+                </View>
+                <Text style={styles.storeName}>
+                  {getStoreNameFromId(item.storeId)}
                 </Text>
               </View>
-              <Text style={styles.storeName}>
-                {getStoreNameFromId(item.storeId)}
-              </Text>
-            </View>
-          </TouchableOpacity>
-        )}
-        keyExtractor={(item) => item.id}
-      />
+            </TouchableOpacity>
+          )}
+          keyExtractor={(item) => item.id}
+        />
+      )}
     </View>
   );
 }
@@ -107,5 +148,11 @@ const styles = StyleSheet.create({
     color: '#555',
     fontSize: 14,
     textAlign: 'right',
+  },
+  errorText: {
+    color: 'red',
+    fontSize: 16,
+    textAlign: 'center',
+    marginTop: 20,
   },
 });

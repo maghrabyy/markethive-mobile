@@ -151,7 +151,11 @@ export const ProductDetails = ({ product, store, reviews }) => {
         }}
       >
         <View style={{ flexDirection: 'row' }}>
-          <Rating readonly={true} startingValue={avgRate} imageSize={25} />
+          <Rating
+            readonly={true}
+            startingValue={isNaN ? 0 : avgRate}
+            imageSize={25}
+          />
           <Text style={{ paddingLeft: 5, paddingTop: 3 }}>
             ({reviews.length.toLocaleString()})
           </Text>
