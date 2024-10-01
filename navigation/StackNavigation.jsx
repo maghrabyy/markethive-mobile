@@ -20,6 +20,7 @@ import { ProductListLayoutProvider } from '../context/Context Data/ProductlistLa
 import { ProductsListProvider } from '../context/Context Data/ProductListContext';
 import { BottomSheetRefProvider } from '../context/Context Data/BottomSheetRefContext';
 import { WishlistScreen } from '../screens/authenticatedScreens/WishlistScreen';
+import CheckoutScreen from '../screens/authenticatedScreens/CheckoutScreen';
 
 const Stack = createStackNavigator();
 
@@ -125,6 +126,19 @@ export const StackNavigation = () => {
           </ProductsListProvider>
         )}
       </Stack.Screen>
+      <Stack.Screen
+        name={routes.checkout}
+        component={CheckoutScreen}
+        options={({ navigation }) => ({
+          header: () => (
+            <CustomAppBar
+              title="Checkout"
+              navigation={navigation}
+              hideActions
+            />
+          ),
+        })}
+      ></Stack.Screen>
     </Stack.Navigator>
   );
 };

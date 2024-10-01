@@ -9,4 +9,5 @@ export const routes = {
   orders: 'orders',
   products: 'products',
   wishlist: 'wishlist',
+  checkout: 'checkout',
 };

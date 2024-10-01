@@ -22,24 +22,23 @@ export const ProductDetails = ({ product, store, reviews }) => {
 
   const user = auth.currentUser;
 
-  const { handleAddToCart } = useAddToCart(product, selectedQty, productPrice);
+  const { handleAddToCart, isProductInShoppingCart, addProductToCart } =
+    useAddToCart(product, selectedQty, productPrice);
 
   const avgRate =
     reviews.map((review) => review.rating).reduce((a, b) => a + b, 0) /
     reviews.length;
 
-  // async function handleBuyNow() {
-  //     if (user) {
-  //       if (await isProductInShoppingCart()) {
-  //         navigate('/checkout');
-  //       } else {
-  //         addProductToCart();
-  //         navigate('/checkout');
-  //       }
-  //     } else {
-  //       navigate('/login');
-  //     }
-  //   }
+  async function handleBuyNow() {
+    if (user) {
+      if (await isProductInShoppingCart()) {
+        navigate(routes.checkout);
+      } else {
+        addProductToCart();
+        navigate(routes.checkout);
+      }
+    }
+  }
 
   const { isAddedToWishlist, wishlistHandler, isLoading } = useFetchWishList(
     product.id,
@@ -243,7 +242,7 @@ export const ProductDetails = ({ product, store, reviews }) => {
             }}
             mode="contained"
             buttonColor={colors.primary}
-            // onPress={handleBuyNow}        //Add it later
+            onPress={handleBuyNow} //Add it later
           >
             Buy Now
           </Button>
