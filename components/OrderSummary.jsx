@@ -15,8 +15,9 @@ import {
 } from 'firebase/firestore';
 import { auth, db } from '../firebase';
 import { useFetchCustomer } from '../Custom Hooks/useFetchCustomer';
+import Toast from 'react-native-toast-message';
 
-const OrderSummary = ({ cartItems }) => {
+const OrderSummary = ({ cartItems, value, title }) => {
   const route = useRoute();
   const { customer } = useFetchCustomer(auth.currentUser.uid);
   const [isPlaceOrderLoading, setIsPlaceOrderLoading] = useState(false);
@@ -51,30 +52,34 @@ const OrderSummary = ({ cartItems }) => {
 
   const placeOrderHandler = async () => {
     setIsPlaceOrderLoading(true);
-    try {
-      const order = await addDoc(collection(db, 'Orders'), {
-        customerId: auth.currentUser?.uid,
-        products: cartItems.map((cartItem) => ({
-          prodId: cartItem.prodId,
-          quantity: cartItem.quantity,
-          subTotal: cartItem.subTotal,
-        })),
-        shippingFees,
-        totalAmount,
-        orderHistory: [{ orderStatus: 'pending', date: new Date() }],
-        destinationAddress: customer.address,
-        paymentMethod: 'Cash on delivery',
-      });
+    if (value == null) {
+      Toast.show({ type: 'info', text1: 'You must select payment method' });
+    } else {
+      try {
+        const order = await addDoc(collection(db, 'Orders'), {
+          customerId: auth.currentUser?.uid,
+          products: cartItems.map((cartItem) => ({
+            prodId: cartItem.prodId,
+            quantity: cartItem.quantity,
+            subTotal: cartItem.subTotal,
+          })),
+          shippingFees,
+          totalAmount,
+          orderHistory: [{ orderStatus: 'pending', date: new Date() }],
+          destinationAddress: customer.address,
+          paymentMethod: title,
+        });
 
-      updateStoresDocWithNewOrderData(order.id);
-      updateCustomerDocWithNewOrder(order.id);
-      emptyShoppingCart();
-      navigation.navigate(routes.orders);
-      setIsPlaceOrderLoading(false);
-    } catch (error) {
-      setIsPlaceOrderLoading(false);
-      console.log(error);
-      console.warn(error);
+        updateStoresDocWithNewOrderData(order.id);
+        updateCustomerDocWithNewOrder(order.id);
+        emptyShoppingCart();
+        navigation.navigate(routes.orders);
+        setIsPlaceOrderLoading(false);
+      } catch (error) {
+        setIsPlaceOrderLoading(false);
+        console.log(error);
+        console.warn(error);
+      }
     }
   };
 
@@ -112,7 +117,7 @@ const OrderSummary = ({ cartItems }) => {
             }}
             onPress={() =>
               route.name == 'shoppingCart'
-                ? navigation.navigate(routes.placeOrder)
+                ? navigation.navigate(routes.checkout)
                 : placeOrderHandler()
             }
           >

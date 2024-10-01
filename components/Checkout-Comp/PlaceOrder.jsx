@@ -1,6 +1,5 @@
 import { View } from 'react-native';
 import React, { useState } from 'react';
-import { useFetchCartItems } from '../../Custom Hooks/useFetchCartItems';
 import AddressForm from './AddressForm';
 import ShippingAddress from './ShippingAddress';
 import OrderShippment from './OrderShippment';
@@ -10,7 +9,6 @@ const PlaceOrder = ({ customer }) => {
   const [editing, setEditing] = useState(!customer.address?.city);
   const [update, setUpdate] = useState(false);
   const [isDisabled, setIsDisabled] = useState(true);
-  const { cartItems } = useFetchCartItems();
   return (
     <View>
       {editing ? (
@@ -31,9 +29,6 @@ const PlaceOrder = ({ customer }) => {
             <OrderShippment />
             <Payment />
           </View>
-          {/* <View> 
-                                // add here order summary
-          </View> */}
         </>
       )}
     </View>
