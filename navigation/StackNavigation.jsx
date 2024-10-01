@@ -20,6 +20,7 @@ import { ProductListLayoutProvider } from '../context/Context Data/ProductlistLa
 import { ProductsListProvider } from '../context/Context Data/ProductListContext';
 import { BottomSheetRefProvider } from '../context/Context Data/BottomSheetRefContext';
 import { WishlistScreen } from '../screens/authenticatedScreens/WishlistScreen';
+import PlaceOrderScreen from '../screens/authenticatedScreens/PlaceOrderScreen';
 
 const Stack = createStackNavigator();
 
@@ -101,6 +102,19 @@ export const StackNavigation = () => {
         options={({ navigation }) => ({
           header: () => (
             <CustomAppBar title="Orders" navigation={navigation} hideActions />
+          ),
+        })}
+      />
+      <Stack.Screen
+        name={routes.placeOrder}
+        component={PlaceOrderScreen}
+        options={({ navigation }) => ({
+          header: () => (
+            <CustomAppBar
+              title="PlaceOrder"
+              navigation={navigation}
+              hideActions
+            />
           ),
         })}
       />
