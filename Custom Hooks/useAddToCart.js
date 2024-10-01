@@ -1,5 +1,14 @@
 import { auth, db } from '../firebase';
-import { addDoc, collection, query, where, getDocs } from 'firebase/firestore';
+import {
+  addDoc,
+  collection,
+  query,
+  where,
+  getDocs,
+  updateDoc,
+  doc,
+  arrayUnion,
+} from 'firebase/firestore';
 import Toast from 'react-native-toast-message';
 
 export const useAddToCart = (product, quantity, productPrice) => {
@@ -13,8 +22,11 @@ export const useAddToCart = (product, quantity, productPrice) => {
     subTotal: productPrice * quantity,
   };
 
-  function addProductToCart() {
-    addDoc(collection(db, 'ShoppingCart'), cartData);
+  async function addProductToCart() {
+    const cartItem = await addDoc(collection(db, 'ShoppingCart'), cartData);
+    updateDoc(doc(db, 'Customers', customerId), {
+      shoppingCart: arrayUnion(cartItem.id),
+    });
   }
 
   async function isProductInShoppingCart() {

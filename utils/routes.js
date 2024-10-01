@@ -9,5 +9,6 @@ export const routes = {
   orders: 'orders',
   products: 'products',
   wishlist: 'wishlist',
+  placeOrder: 'PlaceOrder',
   checkout: 'checkout',
 };

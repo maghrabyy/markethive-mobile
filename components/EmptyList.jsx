@@ -5,6 +5,7 @@ import EmptyListImg from '../assets/empty-default.svg';
 import EmptyStoresImg from '../assets/no-stores.svg';
 import EmptyProductsImg from '../assets/no-products.svg';
 import EmptyOrdersImg from '../assets/no-orders.svg';
+import EmptyShoppingCart from '../assets/Add-to-Cart.svg';
 
 export const EmptyList = ({ text, type }) => {
   const renderImage = () => {
@@ -17,6 +18,11 @@ export const EmptyList = ({ text, type }) => {
         );
       case 'orders':
         return <EmptyOrdersImg style={{ height: resH(40), width: resW(90) }} />;
+      case 'shoppingCart':
+        return (
+          <EmptyShoppingCart style={{ height: resH(40), width: resW(90) }} />
+        );
+
       default:
         return <EmptyListImg style={{ height: resH(40), width: resW(90) }} />;
     }
