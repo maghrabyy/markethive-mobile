@@ -10,11 +10,11 @@ import { colors } from '../../constants/colors';
 import { resH, resW } from '../../constants/dimensions';
 const AddressForm = ({ address, setEditing, update }) => {
   const checkoutSchema = Yup.object().shape({
-    city: Yup.string().required('Required'),
-    streetAddress: Yup.string().required('Required'),
-    buildingNumber: Yup.string().required('Required'),
-    floor: Yup.string().required('Required'),
-    aptNumber: Yup.string().required('Required'),
+    city: Yup.string().required('City field is required.'),
+    streetAddress: Yup.string().required('Street address is required.'),
+    buildingNumber: Yup.string().required('Building number is required.'),
+    floor: Yup.string().required('Floor number is required.'),
+    aptNumber: Yup.string().required('Apt number is required.'),
   });
 
   return (
@@ -41,7 +41,7 @@ const AddressForm = ({ address, setEditing, update }) => {
           }
         }
         validationSchema={checkoutSchema}
-        onSubmit={async (values, action) => {
+        onSubmit={async (values) => {
           const addressRef = doc(db, 'Customers', `${auth.currentUser.uid}`);
           await updateDoc(addressRef, {
             address: {
@@ -54,7 +54,6 @@ const AddressForm = ({ address, setEditing, update }) => {
             },
           });
           setEditing(false);
-          action.resetForm();
         }}
       >
         {({
@@ -64,11 +63,9 @@ const AddressForm = ({ address, setEditing, update }) => {
           values,
           errors,
           touched,
-          validateForm,
-          setTouched,
         }) => (
           <>
-            <View style={{}}>
+            <View>
               <Text style={styles.label}>City</Text>
               <TextInput
                 name="city"
@@ -192,7 +189,7 @@ const AddressForm = ({ address, setEditing, update }) => {
                   </>
                 )}
               </View>
-              <Text style={styles.label}>Nearst Landmark</Text>
+              <Text style={styles.label}>Nearest Landmark (Optional)</Text>
 
               <TextInput
                 style={styles.input}
@@ -207,24 +204,10 @@ const AddressForm = ({ address, setEditing, update }) => {
               />
               <Button
                 mode="contained"
-                onPress={async () => {
-                  // Validate the form and set all fields as touched
-                  const errors = await validateForm();
-                  setTouched({
-                    city: true,
-                    streetAddress: true,
-                    buildingNumber: true,
-                    floor: true,
-                    aptNumber: true,
-                    nearestLandmark: true,
-                  });
-
-                  if (Object.keys(errors).length === 0) {
-                    handleSubmit();
-                  }
-                }}
+                onPress={handleSubmit}
                 style={{
-                  width: resW(80),
+                  width: '100%',
+                  borderRadius: 8,
                   alignSelf: 'center',
                   marginTop: resH(2),
                   backgroundColor: colors.primary,
@@ -243,9 +226,10 @@ const AddressForm = ({ address, setEditing, update }) => {
 const styles = StyleSheet.create({
   erorVeiw: {
     flexDirection: 'row',
-    gap: 10,
-    width: resW(90),
-    alignSelf: 'center',
+    gap: 4,
+    alignItems: 'center',
+    paddingTop: 4,
+    paddingStart: 4,
   },
   txt: { fontSize: 50, fontWeight: '600' },
   input: {

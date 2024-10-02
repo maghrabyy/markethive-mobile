@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Alert, StyleSheet, Text, View } from 'react-native';
 import { Button, Card, Divider } from 'react-native-paper';
 import { COLORS } from '../src/constants/theme';
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -17,7 +17,7 @@ import { auth, db } from '../firebase';
 import { useFetchCustomer } from '../Custom Hooks/useFetchCustomer';
 import Toast from 'react-native-toast-message';
 
-const OrderSummary = ({ cartItems, value, title }) => {
+const OrderSummary = ({ cartItems, paymentMethod }) => {
   const route = useRoute();
   const { customer } = useFetchCustomer(auth.currentUser.uid);
   const [isPlaceOrderLoading, setIsPlaceOrderLoading] = useState(false);
@@ -51,35 +51,31 @@ const OrderSummary = ({ cartItems, value, title }) => {
   };
 
   const placeOrderHandler = async () => {
-    setIsPlaceOrderLoading(true);
-    if (value == null) {
-      Toast.show({ type: 'info', text1: 'You must select payment method' });
-    } else {
-      try {
-        const order = await addDoc(collection(db, 'Orders'), {
-          customerId: auth.currentUser?.uid,
-          products: cartItems.map((cartItem) => ({
-            prodId: cartItem.prodId,
-            quantity: cartItem.quantity,
-            subTotal: cartItem.subTotal,
-          })),
-          shippingFees,
-          totalAmount,
-          orderHistory: [{ orderStatus: 'pending', date: new Date() }],
-          destinationAddress: customer.address,
-          paymentMethod: title,
-        });
+    try {
+      setIsPlaceOrderLoading(true);
+      const order = await addDoc(collection(db, 'Orders'), {
+        customerId: auth.currentUser?.uid,
+        products: cartItems.map((cartItem) => ({
+          prodId: cartItem.prodId,
+          quantity: cartItem.quantity,
+          subTotal: cartItem.subTotal,
+        })),
+        shippingFees,
+        totalAmount,
+        orderHistory: [{ orderStatus: 'pending', date: new Date() }],
+        destinationAddress: customer.address,
+        paymentMethod: paymentMethod.title,
+      });
 
-        updateStoresDocWithNewOrderData(order.id);
-        updateCustomerDocWithNewOrder(order.id);
-        emptyShoppingCart();
-        navigation.navigate(routes.orders);
-        setIsPlaceOrderLoading(false);
-      } catch (error) {
-        setIsPlaceOrderLoading(false);
-        console.log(error);
-        console.warn(error);
-      }
+      updateStoresDocWithNewOrderData(order.id);
+      updateCustomerDocWithNewOrder(order.id);
+      emptyShoppingCart();
+      navigation.replace(routes.orders);
+      setIsPlaceOrderLoading(false);
+    } catch (error) {
+      setIsPlaceOrderLoading(false);
+      console.log(error);
+      console.warn(error);
     }
   };
 
@@ -108,20 +104,43 @@ const OrderSummary = ({ cartItems, value, title }) => {
             </Text>
           </View>
           <Button
-            textColor={COLORS.primary}
-            style={{
-              backgroundColor: 'transparent',
-              marginVertical: 10,
-              borderColor: COLORS.primary,
-              borderWidth: 1,
-            }}
+            loading={isPlaceOrderLoading}
+            mode={route.name == 'shoppingCart' ? 'outlined' : 'contained'}
+            textColor={route.name == 'shoppingCart' ? COLORS.primary : 'white'}
+            style={[
+              {
+                marginVertical: 10,
+                borderWidth: 1,
+                borderRadius: 8,
+              },
+              route.name == 'shoppingCart'
+                ? styles.checkoutBtn
+                : styles.placeOrderBtn,
+            ]}
             onPress={() =>
               route.name == 'shoppingCart'
                 ? navigation.navigate(routes.checkout)
-                : placeOrderHandler()
+                : paymentMethod === null
+                  ? Toast.show({
+                      type: 'info',
+                      text1: 'You must select payment method',
+                    })
+                  : Alert.alert(
+                      'Confirm Order',
+                      `Are you sure you want to place order of amount ${totalAmount.toLocaleString()}EGP?`,
+                      [
+                        {
+                          text: 'Cancel',
+                        },
+                        {
+                          text: 'Confirm',
+                          onPress: placeOrderHandler,
+                        },
+                      ],
+                    )
             }
           >
-            {route.name == 'shoppingCart' ? 'Checkout' : 'Placeorder'}
+            {route.name == 'shoppingCart' ? 'Checkout' : 'Place Order'}
           </Button>
         </Card.Content>
       </Card>
@@ -138,11 +157,16 @@ const styles = StyleSheet.create({
   orderSummeryShippingFees: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    // marginBottom: 10,
   },
   totalText: {
     fontSize: 20,
     fontWeight: '500',
+  },
+  checkoutBtn: {
+    borderColor: COLORS.primary,
+  },
+  placeOrderBtn: {
+    backgroundColor: COLORS.primary,
   },
 });
 

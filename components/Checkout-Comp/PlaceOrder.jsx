@@ -8,7 +8,6 @@ import Payment from './Payment';
 const PlaceOrder = ({ customer }) => {
   const [editing, setEditing] = useState(!customer.address?.city);
   const [update, setUpdate] = useState(false);
-  const [isDisabled, setIsDisabled] = useState(true);
   return (
     <View>
       {editing ? (
@@ -19,16 +18,13 @@ const PlaceOrder = ({ customer }) => {
         />
       ) : (
         <>
-          <View>
-            <ShippingAddress
-              setEditing={setEditing}
-              setUpdate={setUpdate}
-              customer={customer}
-              setIsDisabled={setIsDisabled}
-            />
-            <OrderShippment />
-            <Payment />
-          </View>
+          <ShippingAddress
+            setEditing={setEditing}
+            setUpdate={setUpdate}
+            customer={customer}
+          />
+          <OrderShippment />
+          <Payment />
         </>
       )}
     </View>

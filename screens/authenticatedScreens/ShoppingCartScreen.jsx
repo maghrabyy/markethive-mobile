@@ -1,4 +1,4 @@
-import { Text, ScrollView, StyleSheet, View } from 'react-native';
+import { Text, StyleSheet, FlatList } from 'react-native';
 import { EmptyList } from '../../components/EmptyList';
 import { ScreenLoader } from '../../components/ScreenLoader';
 import { useNavigation } from '@react-navigation/native';
@@ -12,22 +12,21 @@ export const ShoppingCartScreen = () => {
   const { cartItems, isCartLoading } = useFetchCartItems();
   const navigation = useNavigation();
 
-  return (
-    <ScrollView contentContainerStyle={styles.contentContainer}>
-      {isCartLoading ? (
-        <ScreenLoader />
-      ) : cartItems[0] ? (
-        cartItems.map((item) => (
-          <View style={{ flex: 1 }}>
-            <CartItem
-              key={item.prodId}
-              prodId={item.prodId}
-              cartItemId={item.id}
-              subTotal={item.subTotal}
-            />
-          </View>
-        ))
-      ) : (
+  return isCartLoading ? (
+    <ScreenLoader />
+  ) : (
+    <FlatList
+      data={cartItems}
+      contentContainerStyle={styles.contentContainer}
+      ListFooterComponentStyle={{ marginTop: 'auto' }}
+      renderItem={({ item }) => (
+        <CartItem
+          prodId={item.prodId}
+          cartItemId={item.id}
+          subTotal={item.subTotal}
+        />
+      )}
+      ListEmptyComponent={() => (
         <EmptyList
           text={
             <>
@@ -43,8 +42,10 @@ export const ShoppingCartScreen = () => {
           type="shoppingCart"
         />
       )}
-      {cartItems[0] && <OrderSummary cartItems={cartItems} />}
-    </ScrollView>
+      ListFooterComponent={() =>
+        cartItems[0] && <OrderSummary cartItems={cartItems} />
+      }
+    />
   );
 };
 const styles = StyleSheet.create({
