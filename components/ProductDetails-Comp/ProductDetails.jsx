@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { auth } from '../../firebase';
 import { useAddToCart } from '../../Custom Hooks/useAddToCart';
@@ -7,8 +7,9 @@ import { useFetchWishList } from '../../Custom Hooks/useFetchWishList';
 import { Avatar, Button, IconButton } from 'react-native-paper';
 import FaIcon from 'react-native-vector-icons/FontAwesome';
 import { colors } from '../../constants/colors';
-import { Rating } from 'react-native-ratings';
 import { QuantitySelector } from './QuantitySelector';
+import { routes } from '../../utils/routes';
+import StarRating from 'react-native-star-rating-widget';
 
 export const ProductDetails = ({ product, store, reviews }) => {
   const { navigate } = useNavigation();
@@ -21,8 +22,7 @@ export const ProductDetails = ({ product, store, reviews }) => {
 
   const user = auth.currentUser;
 
-  const { handleAddToCart, isProductInShoppingCart, addProductToCart } =
-    useAddToCart(product, selectedQty, productPrice);
+  const { handleAddToCart } = useAddToCart(product, selectedQty, productPrice);
 
   const avgRate =
     reviews.map((review) => review.rating).reduce((a, b) => a + b, 0) /
@@ -55,7 +55,16 @@ export const ProductDetails = ({ product, store, reviews }) => {
           marginTop: 5,
         }}
       >
-        <Button>Visit {store.name} Store</Button>
+        <Button
+          onPress={() =>
+            navigate(routes.products, {
+              collectionName: store.name,
+              store: store,
+            })
+          }
+        >
+          Visit {store.name} Store
+        </Button>
         <Text
           style={{
             fontSize: 20,
@@ -68,12 +77,13 @@ export const ProductDetails = ({ product, store, reviews }) => {
           {product.title}
         </Text>
       </View>
-      <View style={{ position: 'relative' }}>
+      <View style={{ position: 'relative', alignItems: 'center' }}>
         {Number(product.discount) > 0 && (
           <View
             style={{
               backgroundColor: 'red',
               position: 'absolute',
+              left: 0,
               padding: 8,
               zIndex: 20,
               borderBottomEndRadius: 15,
@@ -88,7 +98,11 @@ export const ProductDetails = ({ product, store, reviews }) => {
         <Image
           source={{ uri: product.images[activeImage] }}
           alt={product.title}
-          style={{ width: 350, height: 350, marginHorizontal: 5 }}
+          style={{
+            width: 350,
+            height: 350,
+            marginHorizontal: 5,
+          }}
         />
         <IconButton
           style={{ position: 'absolute', top: 0, right: 10, zIndex: 10 }}
@@ -150,13 +164,15 @@ export const ProductDetails = ({ product, store, reviews }) => {
           paddingHorizontal: 10,
         }}
       >
-        <View style={{ flexDirection: 'row' }}>
-          <Rating
-            readonly={true}
-            startingValue={isNaN ? 0 : avgRate}
-            imageSize={25}
+        <View style={{ flexDirection: 'row', gap: 4, alignItems: 'center' }}>
+          <Text>{isNaN(avgRate) ? 0 : avgRate.toFixed(1)}</Text>
+          <StarRating
+            enableHalfStar
+            onChange={() => null}
+            rating={isNaN(avgRate) ? 0 : avgRate}
+            starStyle={{ width: 17 }}
           />
-          <Text style={{ paddingLeft: 5, paddingTop: 3 }}>
+          <Text style={{ marginStart: 8 }}>
             ({reviews.length.toLocaleString()})
           </Text>
         </View>
@@ -220,7 +236,11 @@ export const ProductDetails = ({ product, store, reviews }) => {
             maxValue={product.stockQuantity}
           />
           <Button
-            style={{ justifyContent: 'center', alignSelf: 'stretch' }}
+            style={{
+              justifyContent: 'center',
+              alignSelf: 'stretch',
+              borderRadius: 8,
+            }}
             mode="contained"
             buttonColor={colors.primary}
             // onPress={handleBuyNow}        //Add it later
@@ -232,6 +252,7 @@ export const ProductDetails = ({ product, store, reviews }) => {
               justifyContent: 'center',
               alignSelf: 'stretch',
               borderColor: colors.primary,
+              borderRadius: 8,
             }}
             mode="outlined"
             onPress={handleAddToCart}

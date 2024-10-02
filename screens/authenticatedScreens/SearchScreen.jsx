@@ -11,7 +11,7 @@ import { Searchbar } from 'react-native-paper';
 import { FlatList } from 'react-native-gesture-handler';
 import { EmptyList } from '../../components/EmptyList';
 import { useProductSearch } from '../../Custom Hooks/useProductSearch';
-import { resW } from '../../constants/dimensions';
+import { resH, resW } from '../../constants/dimensions';
 import { useNavigation } from '@react-navigation/native';
 import { routes } from '../../utils/routes';
 
@@ -53,49 +53,56 @@ export default function SearchScreen() {
         />
       </View>
 
-      {loading && <ActivityIndicator size="large" color="#0000ff" />}
-
-      {error && (
-        <Text style={styles.errorText}>
-          Failed to load products. Please try again.
-        </Text>
-      )}
-
-      {!loading && !error && (
-        <FlatList
-          contentContainerStyle={{ alignItems: 'center' }}
-          data={searchProducts}
-          ItemSeparatorComponent={() => <View height={8} />}
-          ListEmptyComponent={() => <EmptyList text="Nothing is found here." />}
-          renderItem={({ item }) => (
-            <TouchableOpacity
-              onPress={() => {
-                navigate(routes.productDetails, { prodId: item.id });
+      <FlatList
+        contentContainerStyle={{ alignItems: 'center' }}
+        data={searchProducts}
+        showsVerticalScrollIndicator={false}
+        ItemSeparatorComponent={() => <View height={8} />}
+        ListEmptyComponent={() =>
+          text.length > 0 ? (
+            <EmptyList text="Nothing is found here." />
+          ) : (
+            <View
+              style={{
+                gap: 4,
+                paddingHorizontal: 12,
               }}
             >
-              <View style={styles.itemContainer}>
-                <View style={styles.itemContent}>
-                  <Image
-                    source={{
-                      uri:
-                        item.images?.[0] || 'https://via.placeholder.com/150',
-                    }} // Fallback if no image
-                    style={styles.itemImage}
-                    accessibilityLabel={item.title}
-                  />
-                  <Text style={styles.itemTitle} numberOfLines={3}>
-                    {item.title}
-                  </Text>
-                </View>
-                <Text style={styles.storeName}>
-                  {getStoreNameFromId(item.storeId)}
-                </Text>
-              </View>
-            </TouchableOpacity>
-          )}
-          keyExtractor={(item) => item.id}
-        />
-      )}
+              <Text style={{ textAlign: 'center', fontSize: 18 }}>
+                Search for products based on title, store name, and category.
+              </Text>
+              <Image
+                style={{ width: resW(90), height: resH(40) }}
+                source={require('../../assets/search-default.png')}
+              />
+            </View>
+          )
+        }
+        renderItem={({ item }) => (
+          <TouchableOpacity
+            activeOpacity={0.8}
+            style={styles.itemContainer}
+            onPress={() => {
+              navigate(routes.productDetails, { prodId: item.id });
+            }}
+          >
+            <View style={styles.itemContent}>
+              <Image
+                source={{ uri: item.images[0] }}
+                style={styles.itemImage}
+                accessibilityLabel={item.title}
+              />
+              <Text style={styles.itemTitle} numberOfLines={3}>
+                {item.title}
+              </Text>
+            </View>
+            <Text style={styles.storeName}>
+              {getStoreNameFromId(item.storeId)}
+            </Text>
+          </TouchableOpacity>
+        )}
+        keyExtractor={(item) => item.id}
+      />
     </View>
   );
 }
@@ -104,7 +111,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    padding: 16,
+    paddingTop: 12,
   },
   searchContainer: {
     width: resW(95),

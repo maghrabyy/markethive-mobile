@@ -17,14 +17,12 @@ export const QuantitySelector = ({ value, onChange, maxValue }) => {
   return (
     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
       <IconButton
-        iconColor={colors.primary}
         icon="minus-box-outline"
         size={30}
         onPress={() => decrementQtyHandler()}
       />
       <Text style={{ fontSize: 20 }}>{value}</Text>
       <IconButton
-        iconColor={colors.primary}
         icon="plus-box-outline"
         size={30}
         onPress={() => incrementQtyHandler()}

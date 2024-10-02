@@ -6,4 +6,7 @@ export const routes = {
   shoppingCart: 'shoppingCart',
   profile: 'profile',
   productDetails: 'productDetails',
+  orders: 'orders',
+  products: 'products',
+  wishlist: 'wishlist',
 };

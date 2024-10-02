@@ -1,15 +1,23 @@
-import { View, Text, Image } from 'react-native';
+import { TouchableOpacity, Text, Image } from 'react-native';
 import { resW } from '../constants/dimensions';
 import { colors } from '../constants/colors';
+import { useNavigation } from '@react-navigation/native';
+import { routes } from '../utils/routes';
 
 export const CollectionCard = ({
   title,
   imageUrl,
+  params,
   width = resW(45),
   height = 200,
 }) => {
+  const navigation = useNavigation();
   return (
-    <View
+    <TouchableOpacity
+      activeOpacity={0.8}
+      onPress={() => {
+        navigation.navigate(routes.products, params);
+      }}
       style={{
         height: height,
         width: width,
@@ -31,6 +39,6 @@ export const CollectionCard = ({
       >
         {title}
       </Text>
-    </View>
+    </TouchableOpacity>
   );
 };

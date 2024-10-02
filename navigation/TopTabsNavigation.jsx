@@ -27,15 +27,6 @@ export const TopTabsNavigation = () => {
       }}
     >
       <Tab.Screen
-        name="Stores"
-        component={StoresScreen}
-        options={{
-          tabBarIcon: ({ color }) => (
-            <Fa5Icon name="store" color={color} size={20} />
-          ),
-        }}
-      />
-      <Tab.Screen
         name="Home"
         component={HomeScreen}
         options={{
@@ -45,9 +36,19 @@ export const TopTabsNavigation = () => {
         }}
       />
       <Tab.Screen
+        name="Stores"
+        component={StoresScreen}
+        options={{
+          tabBarIcon: ({ color }) => (
+            <Fa5Icon name="store" color={color} size={20} />
+          ),
+        }}
+      />
+      <Tab.Screen
         name="Categories"
         component={CategoriesScreen}
         options={{
+          tabBarLabelStyle: { fontSize: 11 },
           tabBarIcon: ({ color }) => (
             <IonIcon name="grid" color={color} size={24} />
           ),

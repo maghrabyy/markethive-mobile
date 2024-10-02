@@ -93,6 +93,7 @@ const RegisterScreen = ({ navigation }) => {
                 orders: [],
                 shoppingCart: [],
                 wishlist: [],
+                purchasedProducts: [],
                 registrationDate: new Date(),
               });
               await updateProfile(user, {

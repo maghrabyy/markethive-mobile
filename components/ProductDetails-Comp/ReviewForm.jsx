@@ -1,8 +1,16 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
-import { Rating } from 'react-native-ratings';
 import { colors } from '../../constants/colors';
+import StarRating from 'react-native-star-rating-widget';
+import {
+  addDoc,
+  collection,
+  updateDoc,
+  doc,
+  arrayUnion,
+} from 'firebase/firestore';
+import { db, auth } from '../../firebase';
 
 export const ReviewForm = ({ productId }) => {
   const [reviewTitle, setReviewTitle] = useState('');
@@ -33,6 +41,8 @@ export const ReviewForm = ({ productId }) => {
       } catch (error) {
         console.log(error.message);
       }
+    } else {
+      console.log('test');
     }
   };
   return (
@@ -44,7 +54,7 @@ export const ReviewForm = ({ productId }) => {
         placeholder="Review Title"
         value={reviewTitle}
         onChangeText={(title) => setReviewTitle(title)}
-        style={{ marginVertical: 10 }}
+        style={{ marginVertical: 10, backgroundColor: 'transparent' }}
         outlineColor={colors.primary}
       />
       <TextInput
@@ -54,6 +64,7 @@ export const ReviewForm = ({ productId }) => {
         onChangeText={(message) => setReviewMessage(message)}
         multiline={true}
         numberOfLines={4}
+        style={{ backgroundColor: 'transparent', paddingTop: 8 }}
         outlineColor={colors.primary}
       />
       <View
@@ -63,16 +74,17 @@ export const ReviewForm = ({ productId }) => {
           marginVertical: 5,
         }}
       >
-        <Rating
-          imageSize={25}
-          startingValue={0}
-          style={{ paddingVertical: 10 }}
-          onFinishRating={(val) => setReviewRate(val)}
+        <StarRating
+          starStyle={{ width: 20 }}
+          onChange={setReviewRate}
+          rating={reviewRate}
+          enableHalfStar
         />
         <Button
           mode="contained"
-          onPress={() => reviewSubmitHandler}
+          onPress={reviewSubmitHandler}
           loading={submitLoading}
+          style={{ borderRadius: 8 }}
           buttonColor={colors.primary}
         >
           Submit Review

@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { useFetchCustomer } from '../../Custom Hooks/useFetchCustomer';
 import { CollectionSkeletonCard } from '../CardSkeleton';
-import { Rating } from 'react-native-ratings';
+import StarRating from 'react-native-star-rating-widget';
 
 export const ReviewBox = ({ review }) => {
   const { customer, isLoading, error } = useFetchCustomer(review.cstId);
@@ -24,17 +24,18 @@ export const ReviewBox = ({ review }) => {
             flexDirection: 'row',
             justifyContent: 'space-between',
             marginHorizontal: 5,
-            marginVertical: 10,
             backgroundColor: 'white',
             borderRadius: 10,
-            paddingHorizontal: 6,
+            padding: 8,
           }}
         >
           <View>
-            <Rating
-              readonly={true}
-              startingValue={review.rating}
-              imageSize={20}
+            <StarRating
+              onChange={() => null}
+              enableHalfStar
+              starStyle={{ width: 12 }}
+              rating={review.rating}
+              starSize={20}
             />
             <Text style={{ fontWeight: 'bold', marginVertical: 5 }}>
               {review.comment.reviewTitle}

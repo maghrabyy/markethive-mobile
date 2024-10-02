@@ -1,13 +1,17 @@
-import { View, ScrollView, Text } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import useFetchData from '../../Custom Hooks/useFetchData';
 import { ProductCard } from '../../components/ProductCard';
 import { CollectionCard } from '../../components/CollectionCard';
-import { resW } from '../../constants/dimensions';
+import { resW, SCREEN_WIDTH } from '../../constants/dimensions';
 import { CollectionSkeletonCard } from '../../components/CardSkeleton';
 import { ProductSkeletonCard } from '../../components/CardSkeleton';
 import { HomeScreenSection } from '../../components/HomeScreenSection';
+import { SlidesIndicator } from '../../components/SlidesIndicator';
+import { useState } from 'react';
 
 export const HomeScreen = () => {
+  const [categoriesIndex, setCategoriesIndex] = useState(0);
+  const [storesIndex, setStoresIndex] = useState(0);
   const {
     products,
     categories,
@@ -45,6 +49,12 @@ export const HomeScreen = () => {
             horizontal
             showsHorizontalScrollIndicator={false}
             pagingEnabled
+            onScroll={(e) => {
+              const index = Math.round(
+                e.nativeEvent.contentOffset.x / SCREEN_WIDTH,
+              );
+              setCategoriesIndex(index);
+            }}
           >
             {popularCategoryList.map((category, index) => (
               <View
@@ -57,11 +67,19 @@ export const HomeScreen = () => {
                 <CollectionCard
                   title={category.categoryName}
                   imageUrl={category.categoryImage}
+                  params={{
+                    collectionName: category.categoryName,
+                    categoryId: category.id,
+                  }}
                 />
               </View>
             ))}
           </ScrollView>
         )}
+        <SlidesIndicator
+          list={popularCategoryList}
+          targetIndex={categoriesIndex}
+        />
       </HomeScreenSection>
       <HomeScreenSection title="Popular Stores">
         {isStoresLoading ? (
@@ -80,6 +98,12 @@ export const HomeScreen = () => {
             horizontal
             showsHorizontalScrollIndicator={false}
             pagingEnabled
+            onScroll={(e) => {
+              const index = Math.round(
+                e.nativeEvent.contentOffset.x / SCREEN_WIDTH,
+              );
+              setStoresIndex(index);
+            }}
           >
             {popularStoresList.map((store, index) => (
               <View
@@ -88,11 +112,16 @@ export const HomeScreen = () => {
                   marginEnd: index !== popularStoresList.length - 1 && resW(2),
                 }}
               >
-                <CollectionCard title={store.name} imageUrl={store.logo} />
+                <CollectionCard
+                  title={store.name}
+                  imageUrl={store.logo}
+                  params={{ collectionName: store.name, store }}
+                />
               </View>
             ))}
           </ScrollView>
         )}
+        <SlidesIndicator list={popularStoresList} targetIndex={storesIndex} />
       </HomeScreenSection>
 
       <HomeScreenSection title="Popular Products">
