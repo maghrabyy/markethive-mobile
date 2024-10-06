@@ -16,6 +16,7 @@ import {
 import { auth, db } from '../firebase';
 import { useFetchCustomer } from '../Custom Hooks/useFetchCustomer';
 import Toast from 'react-native-toast-message';
+import { CardCheckoutForm } from './Checkout-Comp/CardCheckoutForm';
 
 const OrderSummary = ({ cartItems, paymentMethod }) => {
   const route = useRoute();
@@ -48,10 +49,15 @@ const OrderSummary = ({ cartItems, paymentMethod }) => {
     await updateDoc(doc(db, 'Customers', auth.currentUser.uid), {
       orders: arrayUnion(orderId),
     });
+    cartItems.forEach(async (cartItem) => {
+      await updateDoc(doc(db, 'Customers', auth.currentUser.uid), {
+        purchasedProducts: arrayUnion(cartItem.prodId),
+      });
+    });
   };
 
   const placeOrderHandler = async () => {
-    if (paymentMethod.value !== 'cash') {
+    if (paymentMethod.value === 'valu') {
       Alert.alert(
         'Payment Method',
         'We are actively working on implementing this feature and will notify our customers as soon as it becomes available.',
@@ -115,45 +121,54 @@ const OrderSummary = ({ cartItems, paymentMethod }) => {
               {totalAmount.toLocaleString()} EGP
             </Text>
           </View>
-          <Button
-            loading={isPlaceOrderLoading}
-            mode={route.name == 'shoppingCart' ? 'outlined' : 'contained'}
-            textColor={route.name == 'shoppingCart' ? COLORS.primary : 'white'}
-            style={[
-              {
-                marginVertical: 10,
-                borderWidth: 1,
-                borderRadius: 8,
-              },
-              route.name == 'shoppingCart'
-                ? styles.checkoutBtn
-                : styles.placeOrderBtn,
-            ]}
-            onPress={() =>
-              route.name == 'shoppingCart'
-                ? navigation.navigate(routes.checkout)
-                : paymentMethod === null
-                  ? Toast.show({
-                      type: 'info',
-                      text1: 'You must select payment method',
-                    })
-                  : Alert.alert(
-                      'Confirm Order',
-                      `Are you sure you want to place order of amount ${totalAmount.toLocaleString()}EGP?`,
-                      [
-                        {
-                          text: 'Cancel',
-                        },
-                        {
-                          text: 'Confirm',
-                          onPress: placeOrderHandler,
-                        },
-                      ],
-                    )
-            }
-          >
-            {route.name == 'shoppingCart' ? 'Checkout' : 'Place Order'}
-          </Button>
+          {paymentMethod?.value === 'debitNCredit' ? (
+            <CardCheckoutForm
+              totalAmount={totalAmount}
+              placeOrderHandler={placeOrderHandler}
+            />
+          ) : (
+            <Button
+              loading={isPlaceOrderLoading}
+              mode={route.name == 'shoppingCart' ? 'outlined' : 'contained'}
+              textColor={
+                route.name == 'shoppingCart' ? COLORS.primary : 'white'
+              }
+              style={[
+                {
+                  marginVertical: 10,
+                  borderWidth: 1,
+                  borderRadius: 8,
+                },
+                route.name == 'shoppingCart'
+                  ? styles.checkoutBtn
+                  : styles.placeOrderBtn,
+              ]}
+              onPress={() =>
+                route.name == 'shoppingCart'
+                  ? navigation.navigate(routes.checkout)
+                  : paymentMethod === null
+                    ? Toast.show({
+                        type: 'info',
+                        text1: 'You must select payment method',
+                      })
+                    : Alert.alert(
+                        'Confirm Order',
+                        `Are you sure you want to place order of amount ${totalAmount.toLocaleString()}EGP?`,
+                        [
+                          {
+                            text: 'Cancel',
+                          },
+                          {
+                            text: 'Confirm',
+                            onPress: placeOrderHandler,
+                          },
+                        ],
+                      )
+              }
+            >
+              {route.name == 'shoppingCart' ? 'Checkout' : 'Place Order'}
+            </Button>
+          )}
         </Card.Content>
       </Card>
     </View>

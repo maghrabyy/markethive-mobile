@@ -7,7 +7,7 @@ import OrderSummary from '../OrderSummary';
 import { useFetchCartItems } from '../../Custom Hooks/useFetchCartItems';
 
 const Payment = () => {
-  const [selected, setselected] = useState(-1);
+  const [selectedPayment, setSelectedPayment] = useState(-1);
   const { cartItems } = useFetchCartItems();
   const paymentMethodTitle = useRef(null);
   const arr = [
@@ -58,13 +58,13 @@ const Payment = () => {
                 alignItems: 'center',
                 justifyContent: 'space-evenly',
                 borderWidth: 1,
-                borderColor: ind == selected ? colors.primary : 'gray',
+                borderColor: ind == selectedPayment ? colors.primary : 'gray',
                 borderRadius: 15,
                 paddingHorizontal: 4,
               }}
               key={ind}
               onPress={() => {
-                setselected(ind);
+                setSelectedPayment(ind);
                 paymentMethodTitle.current = {
                   title: item.title,
                   value: item.value,
@@ -86,7 +86,7 @@ const Payment = () => {
               >
                 {item.title}
               </Text>
-              {selected === ind && (
+              {selectedPayment === ind && (
                 <>
                   <View
                     style={{
