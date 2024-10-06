@@ -1,4 +1,4 @@
-import { View, Text, Image, TouchableOpacity } from 'react-native';
+import { View, Text, Image, TouchableOpacity, Alert } from 'react-native';
 import React, { useRef, useState } from 'react';
 import { colors } from '../../constants/colors';
 import { resH, resW } from '../../constants/dimensions';
@@ -64,6 +64,17 @@ const Payment = () => {
               }}
               key={ind}
               onPress={() => {
+                if (ind === 1) {
+                  Alert.alert(
+                    'Payment Method',
+                    'We are actively working on implementing this feature and will notify our customers as soon as it becomes available.',
+                    [
+                      {
+                        text: 'Ok',
+                      },
+                    ],
+                  );
+                }
                 setSelectedPayment(ind);
                 paymentMethodTitle.current = {
                   title: item.title,

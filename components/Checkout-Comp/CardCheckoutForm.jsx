@@ -7,70 +7,49 @@ import { Alert } from 'react-native';
 import { TextInput } from 'react-native-paper';
 
 export const CardCheckoutForm = ({ totalAmount, placeOrderHandler }) => {
-  const [cardHolderName, setCardHolderName] = useState('');
   const stripe = useStripe();
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState();
 
   const handleSubmit = async () => {
     setIsLoading(true);
-    if (cardHolderName !== '') {
-      try {
-        const response = await fetch(
-          'https://markethive-stripe-payment.vercel.app/create-payment-intent',
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              amount: totalAmount * 100,
-              currency: 'usd',
-            }),
+    try {
+      const response = await fetch(
+        'https://markethive-stripe-payment.vercel.app/create-payment-intent',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
           },
-        );
+          body: JSON.stringify({
+            amount: totalAmount * 100,
+            currency: 'usd',
+          }),
+        },
+      );
 
-        const paymentIntent = await response.json();
+      const paymentIntent = await response.json();
 
-        const confirmPayment = await stripe.confirmPayment(
-          paymentIntent.clientSecret,
-          {
-            paymentMethodType: 'Card',
-            paymentMethodData: {
-              billingDetails: {
-                name: cardHolderName,
-              },
-            },
-          },
-        );
+      const confirmPayment = await stripe.confirmPayment(
+        paymentIntent.clientSecret,
+        {
+          paymentMethodType: 'Card',
+        },
+      );
 
-        if (confirmPayment.error) {
-          setErrorMessage(confirmPayment.error.message);
-        } else {
-          placeOrderHandler();
-        }
-      } catch (error) {
+      if (confirmPayment.error) {
+        setErrorMessage(confirmPayment.error.message);
         setIsLoading(false);
-        setErrorMessage(error.message);
+      } else {
+        placeOrderHandler();
       }
-    } else {
+    } catch (error) {
       setIsLoading(false);
-      setErrorMessage('Card Holder field is required.');
+      setErrorMessage(error.message);
     }
   };
   return (
     <View style={{ gap: 8 }}>
-      <View style={{ gap: 4 }}>
-        <Text style={{ marginStart: 4 }}>Card Holder</Text>
-        <TextInput
-          placeholder="e.g John Doe"
-          mode="outlined"
-          outlineStyle={{ borderRadius: 12, borderColor: 'transparent' }}
-          value={cardHolderName}
-          onChange={(e) => setCardHolderName(e.target.value)}
-        />
-      </View>
-
       <CardField
         postalCodeEnabled={true}
         placeholders={{

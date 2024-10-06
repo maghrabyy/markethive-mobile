@@ -57,43 +57,31 @@ const OrderSummary = ({ cartItems, paymentMethod }) => {
   };
 
   const placeOrderHandler = async () => {
-    if (paymentMethod.value === 'valu') {
-      Alert.alert(
-        'Payment Method',
-        'We are actively working on implementing this feature and will notify our customers as soon as it becomes available.',
-        [
-          {
-            text: 'Ok',
-          },
-        ],
-      );
-    } else {
-      try {
-        setIsPlaceOrderLoading(true);
-        const order = await addDoc(collection(db, 'Orders'), {
-          customerId: auth.currentUser?.uid,
-          products: cartItems.map((cartItem) => ({
-            prodId: cartItem.prodId,
-            quantity: cartItem.quantity,
-            subTotal: cartItem.subTotal,
-          })),
-          shippingFees,
-          totalAmount,
-          orderHistory: [{ orderStatus: 'pending', date: new Date() }],
-          destinationAddress: customer.address,
-          paymentMethod: paymentMethod.title,
-        });
+    try {
+      setIsPlaceOrderLoading(true);
+      const order = await addDoc(collection(db, 'Orders'), {
+        customerId: auth.currentUser?.uid,
+        products: cartItems.map((cartItem) => ({
+          prodId: cartItem.prodId,
+          quantity: cartItem.quantity,
+          subTotal: cartItem.subTotal,
+        })),
+        shippingFees,
+        totalAmount,
+        orderHistory: [{ orderStatus: 'pending', date: new Date() }],
+        destinationAddress: customer.address,
+        paymentMethod: paymentMethod.title,
+      });
 
-        updateStoresDocWithNewOrderData(order.id);
-        updateCustomerDocWithNewOrder(order.id);
-        emptyShoppingCart();
-        navigation.replace(routes.orders);
-        setIsPlaceOrderLoading(false);
-      } catch (error) {
-        setIsPlaceOrderLoading(false);
-        console.log(error);
-        console.warn(error);
-      }
+      updateStoresDocWithNewOrderData(order.id);
+      updateCustomerDocWithNewOrder(order.id);
+      emptyShoppingCart();
+      navigation.replace(routes.orders);
+      setIsPlaceOrderLoading(false);
+    } catch (error) {
+      setIsPlaceOrderLoading(false);
+      console.log(error);
+      console.warn(error);
     }
   };
 
@@ -128,6 +116,7 @@ const OrderSummary = ({ cartItems, paymentMethod }) => {
             />
           ) : (
             <Button
+              disabled={paymentMethod?.value === 'valu'}
               loading={isPlaceOrderLoading}
               mode={route.name == 'shoppingCart' ? 'outlined' : 'contained'}
               textColor={
