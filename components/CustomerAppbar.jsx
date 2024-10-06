@@ -5,7 +5,12 @@ import { colors } from '../constants/colors';
 import { routes } from '../utils/routes';
 import { useFetchCartItems } from '../Custom Hooks/useFetchCartItems';
 
-export const CustomAppBar = ({ title, navigation, hideActions }) => {
+export const CustomAppBar = ({
+  title,
+  navigation,
+  hideActions,
+  hideLeading,
+}) => {
   const { cartItems, isCartLoading } = useFetchCartItems();
   const shoppingCartItemNum = cartItems.length;
   return (
@@ -18,19 +23,25 @@ export const CustomAppBar = ({ title, navigation, hideActions }) => {
           }}
         />
       )}
-      <Appbar.Content
-        title={
-          <View style={{ flexDirection: 'row', gap: 8, alignItems: 'center' }}>
-            <Avatar.Image
-              source={require('../assets/MHLogoIcon.png')}
-              size={38}
-            />
-            <Text style={styles.headerText}>
-              {title ? title : 'Market Hive'}
-            </Text>
-          </View>
-        }
-      />
+      {hideLeading ? (
+        <Appbar.Content />
+      ) : (
+        <Appbar.Content
+          title={
+            <View
+              style={{ flexDirection: 'row', gap: 8, alignItems: 'center' }}
+            >
+              <Avatar.Image
+                source={require('../assets/MHLogoIcon.png')}
+                size={38}
+              />
+              <Text style={styles.headerText}>
+                {title ? title : 'Market Hive'}
+              </Text>
+            </View>
+          }
+        />
+      )}
       {!hideActions && (
         <>
           <Appbar.Action

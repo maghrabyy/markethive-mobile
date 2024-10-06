@@ -91,9 +91,7 @@ export const StackNavigation = () => {
         name={routes.productDetails}
         component={ProductDetailsScreen}
         options={({ navigation }) => ({
-          header: () => (
-            <CustomAppBar title="Details" navigation={navigation} hideActions />
-          ),
+          header: () => <CustomAppBar navigation={navigation} hideLeading />,
         })}
       />
       <Stack.Screen
