@@ -1,6 +1,6 @@
 import { FlatList, StyleSheet, View, Text } from 'react-native';
 import { useState } from 'react';
-import { resW } from '../../constants/dimensions';
+import { resH, resW } from '../../constants/dimensions';
 import { CollectionCard } from '../../components/CollectionCard';
 import { CollectionSkeletonCard } from '../../components/CardSkeleton';
 import { Searchbar } from 'react-native-paper';
@@ -39,6 +39,7 @@ export const CategoriesScreen = () => {
               title={item.categoryName}
               imageUrl={item.categoryImage}
               width={resW(95)}
+              height={resH(36)}
               params={{
                 collectionName: item.categoryName,
                 categoryId: item.id,

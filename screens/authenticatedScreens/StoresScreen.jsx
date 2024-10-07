@@ -4,7 +4,7 @@ import { getDocs, collection } from 'firebase/firestore';
 import { db } from '../../firebase';
 import { CollectionCard } from '../../components/CollectionCard';
 import { CollectionSkeletonCard } from '../../components/CardSkeleton';
-import { resW } from '../../constants/dimensions';
+import { resH, resW } from '../../constants/dimensions';
 import { Searchbar } from 'react-native-paper';
 import { Picker } from '@react-native-picker/picker';
 import { useFetchCategories } from '../../Custom Hooks/useFetchCategories';
@@ -148,6 +148,7 @@ export const StoresScreen = () => {
               title={item.name}
               imageUrl={item.logo}
               width={resW(95)}
+              height={resH(32)}
               params={{
                 collectionName: item.name,
                 store: item,

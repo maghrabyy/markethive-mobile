@@ -10,7 +10,7 @@ export const SlidesIndicator = ({ list, targetIndex }) => {
         marginTop: 14,
       }}
     >
-      {list.slice(0, Math.ceil(list.length / 2)).map((_, index) => (
+      {list.map((_, index) => (
         <View
           key={index}
           style={{
