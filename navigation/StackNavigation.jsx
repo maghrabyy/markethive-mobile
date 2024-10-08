@@ -31,7 +31,7 @@ export const StackNavigation = () => {
     setIsAuthLoading(false);
   });
   return isAsyncStorageLoading || isAuthLoading ? (
-    <ScreenLoader />
+    <ScreenLoader showIcon />
   ) : (
     <Stack.Navigator
       screenOptions={{ header: () => null }}

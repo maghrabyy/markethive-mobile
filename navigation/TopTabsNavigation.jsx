@@ -7,7 +7,7 @@ import Fa5Icon from 'react-native-vector-icons/FontAwesome5';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import { colors } from '../constants/colors';
 import { StyleSheet } from 'react-native';
-import { resH } from '../constants/dimensions';
+import { resH, resW } from '../constants/dimensions';
 import SearchScreen from '../screens/authenticatedScreens/SearchScreen';
 
 const Tab = createMaterialTopTabNavigator();
@@ -47,7 +47,7 @@ export const TopTabsNavigation = () => {
         name="Categories"
         component={CategoriesScreen}
         options={{
-          tabBarLabelStyle: { fontSize: 11 },
+          tabBarLabelStyle: { fontSize: resW(3) },
           tabBarIcon: ({ color }) => (
             <IonIcon name="grid" color={color} size={24} />
           ),
