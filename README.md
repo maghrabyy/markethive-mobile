@@ -48,7 +48,7 @@ This mobile version of the dynamic marketplace platform consolidates multiple on
 2 - Navigate to the project directory:
 
 ```bash
-cd marketplace-mobile
+cd markethive-mobile
 ```
 
 3 - Install the necessary dependencies:
