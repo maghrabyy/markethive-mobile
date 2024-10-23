@@ -10,6 +10,7 @@ This mobile version of the dynamic marketplace platform consolidates multiple on
 - **User Authentication:** Secure login and registration with Firebase.
 - **Responsive Design:** Fully optimized for desktop and mobile views.
 - **Cross-Platform:** Built using React Native and Expo for Android and iOS compatibility.
+  
 **Client-side**
 
 - React Native (Expo): For building cross-platform mobile applications.
