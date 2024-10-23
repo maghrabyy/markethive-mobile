@@ -64,7 +64,7 @@ expo start
 
 To connect the app with Firebase, update the firebaseConfig object in the firebase.js file with your Firebase project credentials:
 
-```javascript
+```js
 const firebaseConfig = {
   apiKey: "YOUR_API_KEY",
   authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
@@ -77,7 +77,7 @@ const firebaseConfig = {
 ```
 
 Stripe is integrated for secure payments:
- ```bash
+ ```js
  const stripe = require('stripe-client')(process.env.STRIPE_PUBLISHABLE_KEY);
 
  ```
